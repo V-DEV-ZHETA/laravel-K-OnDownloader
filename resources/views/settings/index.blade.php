@@ -28,9 +28,9 @@
                             <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
                                 @if($platform->is_active) bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
                                 @if($platform->is_active)
-                                    <i class="fas fa-check mr-1"></i> Active
+                                    <i class="fas fa-check mr-1"></i> Aktif
                                 @else
-                                    <i class="fas fa-times mr-1"></i> Inactive
+                                    <i class="fas fa-times mr-1"></i> NonAktif
                                 @endif
                             </span>
                         </div>

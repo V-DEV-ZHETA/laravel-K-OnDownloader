@@ -6,8 +6,8 @@
 <div class="max-w-4xl mx-auto">
     <div class="bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">
-            <i class="fas fa-download mr-2"></i>
-            Download Media
+            {{-- <i class="fas fa-download mr-2"></i> --}}
+            {{-- Download Media --}}
         </h1>
         
         <form id="downloadForm" class="space-y-6">
@@ -21,16 +21,16 @@
                        id="url" 
                        name="url" 
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                       placeholder="Paste your YouTube, TikTok, Instagram, or Facebook URL here..."
+                       placeholder="Tempel Url Youtube, Tiktok, Instagram, Dan Facebook Disini..."
                        required>
-                <p class="mt-1 text-sm text-gray-500">Supports YouTube, TikTok, Instagram, and Facebook</p>
+                <p class="mt-1 text-sm text-gray-500">Supports YouTube, TikTok, Instagram, Dan Facebook</p>
             </div>
 
             <!-- Platform Selection -->
             <div>
                 <label for="platform" class="block text-sm font-medium text-gray-700 mb-2">
                     <i class="fas fa-globe mr-1"></i>
-                    Platform (Auto-detected)
+                    Platform (Deteksi Otomatis)
                 </label>
                 <select id="platform" 
                         name="platform" 
@@ -62,17 +62,17 @@
                 <div>
                     <label for="quality" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-hd-video mr-1"></i>
-                        Quality
+                        Kualitas Unduhan
                     </label>
                     <select id="quality" 
                             name="quality" 
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="best">Best Quality</option>
+                        <option value="best">Kualitas Terbaik</option>
                         <option value="720p">720p HD</option>
                         <option value="480p">480p SD</option>
                         <option value="360p">360p</option>
                         <option value="240p">240p</option>
-                        <option value="worst">Worst Quality</option>
+                        <option value="worst">Kualitas Terendah</option>
                     </select>
                 </div>
 
@@ -80,7 +80,7 @@
                 <div>
                     <label for="format" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-file mr-1"></i>
-                        Format
+                        Format Unduhan
                     </label>
                     <select id="format" 
                             name="format" 
@@ -103,7 +103,7 @@
                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                     <label for="audioOnly" class="ml-2 block text-sm text-gray-700">
                         <i class="fas fa-music mr-1"></i>
-                        Audio Only
+                        Audio Saja 
                     </label>
                 </div>
             </div>
@@ -112,9 +112,9 @@
             <div class="text-center">
                 <button type="submit" 
                         id="downloadBtn"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                        class="bg-green-400 hover:bg-green-500 text-white font-bold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
                     <i class="fas fa-download mr-2"></i>
-                    Start Download
+                    Mulai Download
                 </button>
             </div>
         </form>
@@ -124,7 +124,7 @@
     <div class="mt-8 bg-white shadow-lg rounded-lg p-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">
             <i class="fas fa-history mr-2"></i>
-            Recent Downloads
+            Histori Download
         </h2>
         <div id="recentDownloads" class="space-y-4">
             <!-- Recent downloads will be loaded here -->
@@ -293,7 +293,7 @@ $(document).ready(function() {
                                     </div>
                                     <div class="flex items-center space-x-2">
                                         <span class="px-2 py-1 text-xs font-medium rounded-full ${download.status_badge_class || 'bg-gray-100 text-gray-800'}">${download.status_badge || download.status}</span>
-                                        ${download.status === 'completed' ? `<a href="/downloads/${download.id}/download" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Download</a>` : ''}
+                                        ${download.status === 'completed' ? `<a href="/downloads/${download.id}/download" class="text-green-400 hover:text-green-500 text-sm font-medium">Download</a>` : ''}
                                     </div>
                                 </div>
                             </div>

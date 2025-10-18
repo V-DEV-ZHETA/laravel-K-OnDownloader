@@ -11,9 +11,9 @@
                 Platforms
             </h1>
             <a href="{{ route('settings.index') }}" 
-               class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+               class="bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
                 <i class="fas fa-sliders-h mr-1"></i>
-                Manage Settings
+                Pengaturan
             </a>
         </div>
 
@@ -22,15 +22,15 @@
                 <div class="bg-gray-50 rounded-lg p-6 card-hover">
                     <div class="text-center mb-4">
                         <i class="{{ $platform->icon }} text-4xl mb-2 
-                            @if($platform->is_active) text-blue-600 @else text-gray-400 @endif"></i>
+                            @if($platform->is_active) text-black-600 @else text-gray-400 @endif"></i>
                         <h3 class="text-lg font-semibold text-gray-900">{{ $platform->display_name }}</h3>
                         <div class="flex items-center justify-center mt-2">
                             <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
                                 @if($platform->is_active) bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
                                 @if($platform->is_active)
-                                    <i class="fas fa-check mr-1"></i> Active
+                                    <i class="fas fa-check mr-1"></i> Aktif
                                 @else
-                                    <i class="fas fa-times mr-1"></i> Inactive
+                                    <i class="fas fa-times mr-1"></i> NonAktif
                                 @endif
                             </span>
                         </div>
@@ -38,9 +38,9 @@
                     
                     <div class="space-y-3">
                         <a href="{{ route('platforms.show', $platform) }}" 
-                           class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 text-center block">
+                           class="w-full bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 text-center block">
                             <i class="fas fa-eye mr-1"></i>
-                            View Details
+                            Lihat Detail
                         </a>
                         
                         <button onclick="togglePlatform({{ $platform->id }})" 

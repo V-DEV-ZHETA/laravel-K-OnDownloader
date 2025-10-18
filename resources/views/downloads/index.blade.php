@@ -8,12 +8,12 @@
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-900">
                 <i class="fas fa-list mr-2"></i>
-                Downloads
+                Histori Download
             </h1>
             <a href="{{ route('downloads.create') }}" 
-               class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+               class="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
                 <i class="fas fa-plus mr-1"></i>
-                New Download
+                Unduh Konten Baru
             </a>
         </div>
 
@@ -32,10 +32,10 @@
                                 Status
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Size
+                                Ukuran
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date
+                                Tanggal Download
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Actions
