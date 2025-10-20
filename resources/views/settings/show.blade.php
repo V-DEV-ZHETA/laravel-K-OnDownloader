@@ -120,6 +120,20 @@
                                 Include Stories
                             </label>
                         </div>
+
+                        <div>
+                            <label for="sessionid" class="block text-sm font-medium text-glass-primary mb-2">
+                                Instagram Session ID
+                            </label>
+                            <input type="password"
+                                   id="sessionid"
+                                   name="settings[sessionid]"
+                                   placeholder="Enter your Instagram session ID"
+                                   class="glassmorphism-input w-full px-4 py-3 rounded-lg text-glass-primary placeholder-glass-secondary">
+                            <p class="text-xs text-glass-secondary mt-1">
+                                Required for private posts. Get from browser dev tools after logging in.
+                            </p>
+                        </div>
                     @endif
 
                     @if($platform->name === 'facebook')

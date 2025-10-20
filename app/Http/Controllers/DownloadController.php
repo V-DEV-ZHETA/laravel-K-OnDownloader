@@ -164,9 +164,13 @@ class DownloadController extends Controller
             $service = DownloaderServiceFactory::create($platform);
             $formats = $service->getAvailableFormats($url);
 
+            // Generate quality options based on available formats
+            $qualityOptions = $this->generateQualityOptions($formats, $platform);
+
             return response()->json([
                 'success' => true,
-                'formats' => $formats
+                'formats' => $formats,
+                'quality_options' => $qualityOptions
             ]);
 
         } catch (\Exception $e) {
@@ -175,6 +179,43 @@ class DownloadController extends Controller
                 'message' => 'Failed to get available formats: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    private function generateQualityOptions(array $formats, string $platform): array
+    {
+        $maxHeight = $formats['max_height'] ?? 0;
+        unset($formats['max_height']); // Remove the max_height from formats array
+
+        $qualityOptions = [];
+
+        // Always include best and worst
+        $qualityOptions['best'] = 'Kualitas Terbaik';
+        $qualityOptions['worst'] = 'Kualitas Terendah';
+
+        // Add resolutions based on max height available
+        if ($maxHeight >= 2160) {
+            $qualityOptions['2160p'] = '2160p 4K';
+        }
+        if ($maxHeight >= 1440) {
+            $qualityOptions['1440p'] = '1440p QHD';
+        }
+        if ($maxHeight >= 1080) {
+            $qualityOptions['1080p'] = '1080p FHD';
+        }
+        if ($maxHeight >= 720) {
+            $qualityOptions['720p'] = '720p HD';
+        }
+        if ($maxHeight >= 480) {
+            $qualityOptions['480p'] = '480p SD';
+        }
+        if ($maxHeight >= 360) {
+            $qualityOptions['360p'] = '360p';
+        }
+        if ($maxHeight >= 240) {
+            $qualityOptions['240p'] = '240p';
+        }
+
+        return $qualityOptions;
     }
 
     public function download(Download $download)

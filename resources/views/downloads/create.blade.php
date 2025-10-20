@@ -55,54 +55,56 @@
             </div>
 
             <!-- Download Options -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Quality Selection -->
-                <div>
-                    <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
-                        <i class="fas fa-hd-video mr-1 text-glass-accent"></i>
-                        Kualitas Unduhan
-                    </label>
-                    <select id="quality"
-                            name="quality"
-                            class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
-                        <option value="best">Kualitas Terbaik</option>
-                        <option value="720p">720p HD</option>
-                        <option value="480p">480p SD</option>
-                        <option value="360p">360p</option>
-                        <option value="240p">240p</option>
-                        <option value="worst">Kualitas Terendah</option>
-                    </select>
+            <div id="downloadOptions" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Quality Selection -->
+                    <div>
+                        <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
+                            <i class="fas fa-hd-video mr-1 text-glass-accent"></i>
+                            Kualitas Unduhan
+                        </label>
+                        <select id="quality"
+                                name="quality"
+                                class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
+                            <option value="best">Kualitas Terbaik</option>
+                            <option value="720p">720p HD</option>
+                            <option value="480p">480p SD</option>
+                            <option value="360p">360p</option>
+                            <option value="240p">240p</option>
+                            <option value="worst">Kualitas Terendah</option>
+                        </select>
+                    </div>
+
+                    <!-- Format Selection -->
+                    <div>
+                        <label for="format" class="block text-sm font-medium text-glass-primary mb-2">
+                            <i class="fas fa-file mr-1 text-glass-accent"></i>
+                            Format Unduhan
+                        </label>
+                        <select id="format"
+                                name="format"
+                                class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
+                            <option value="mp4">MP4 Video</option>
+                            <option value="webm">WebM Video</option>
+                            <option value="mp3">MP3 Audio</option>
+                            <option value="wav">WAV Audio</option>
+                            <option value="m4a">M4A Audio</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Format Selection -->
-                <div>
-                    <label for="format" class="block text-sm font-medium text-glass-primary mb-2">
-                        <i class="fas fa-file mr-1 text-glass-accent"></i>
-                        Format Unduhan
-                    </label>
-                    <select id="format"
-                            name="format"
-                            class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
-                        <option value="mp4">MP4 Video</option>
-                        <option value="webm">WebM Video</option>
-                        <option value="mp3">MP3 Audio</option>
-                        <option value="wav">WAV Audio</option>
-                        <option value="m4a">M4A Audio</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Additional Options -->
-            <div class="space-y-4">
-                <div class="flex items-center">
-                    <input type="checkbox"
-                           id="audioOnly"
-                           name="audio_only"
-                           class="h-4 w-4 text-glass-accent focus:ring-glass-accent border-glass-secondary rounded">
-                    <label for="audioOnly" class="ml-2 block text-sm text-glass-primary">
-                        <i class="fas fa-music mr-1 text-glass-accent"></i>
-                        Audio Saja
-                    </label>
+                <!-- Additional Options -->
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <input type="checkbox"
+                               id="audioOnly"
+                               name="audio_only"
+                               class="h-4 w-4 text-glass-accent focus:ring-glass-accent border-glass-secondary rounded">
+                        <label for="audioOnly" class="ml-2 block text-sm text-glass-primary">
+                            <i class="fas fa-music mr-1 text-glass-accent"></i>
+                            Audio Saja
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -141,8 +143,10 @@ $(document).ready(function() {
         const url = $(this).val();
         if (url) {
             detectPlatform(url);
+            $('#downloadOptions').removeClass('hidden');
         } else {
             hideVideoInfo();
+            $('#downloadOptions').addClass('hidden');
         }
     });
 
@@ -161,12 +165,10 @@ $(document).ready(function() {
                 <option value="m4a">M4A Audio</option>
             `);
             $('#quality').html(`
-                <option value="best">Kualitas Terbaik</option>
                 <option value="320kbps">320kbps</option>
                 <option value="256kbps">256kbps</option>
                 <option value="192kbps">192kbps</option>
                 <option value="128kbps">128kbps</option>
-                <option value="worst">Kualitas Terendah</option>
             `);
             $('label[for="quality"]').html('<i class="fas fa- mr-1 text-glass-accent"></i> Kualitas Unduhan Audio');
         } else {
@@ -178,12 +180,10 @@ $(document).ready(function() {
                 <option value="m4a">M4A Audio</option>
             `);
             $('#quality').html(`
-                <option value="best">Kualitas Terbaik</option>
                 <option value="720p">720p HD</option>
                 <option value="480p">480p SD</option>
                 <option value="360p">360p</option>
                 <option value="240p">240p</option>
-                <option value="worst">Kualitas Terendah</option>
             `);
             $('label[for="quality"]').html('<i class="fas fa-hd-video mr-1 text-glass-accent"></i> Kualitas Unduhan');
         }
@@ -260,12 +260,35 @@ $(document).ready(function() {
                         $('#platform').val(response.platform);
                         currentPlatform = response.platform;
                         updatePlatformOptions();
+                        // Update quality options based on video formats
+                        updateQualityOptions(url, response.platform);
                     }
                 }
             },
             error: function(xhr) {
                 console.error('Platform detection error:', xhr);
                 hideVideoInfo();
+            }
+        });
+    }
+
+    function updateQualityOptions(url, platform) {
+        $.ajax({
+            url: '/downloads/formats',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ url: url, platform: platform }),
+            success: function(response) {
+                if (response.success && response.quality_options) {
+                    let qualityHtml = '';
+                    for (const [value, label] of Object.entries(response.quality_options)) {
+                        qualityHtml += `<option value="${value}">${label}</option>`;
+                    }
+                    $('#quality').html(qualityHtml);
+                }
+            },
+            error: function(xhr) {
+                console.error('Quality options update error:', xhr);
             }
         });
     }

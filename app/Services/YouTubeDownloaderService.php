@@ -135,13 +135,16 @@ class YouTubeDownloaderService extends BaseDownloaderService
     protected function getQualityFormat(string $quality): string
     {
         return match($quality) {
-            'best' => 'best[height<=1080]',
+            'best' => 'best',
+            '2160p' => 'best[height<=2160]',
+            '1440p' => 'best[height<=1440]',
+            '1080p' => 'best[height<=1080]',
             '720p' => 'best[height<=720]',
             '480p' => 'best[height<=480]',
             '360p' => 'best[height<=360]',
             '240p' => 'best[height<=240]',
             'worst' => 'worst',
-            default => 'best[height<=720]'
+            default => 'best'
         };
     }
 
@@ -178,25 +181,34 @@ class YouTubeDownloaderService extends BaseDownloaderService
         ];
 
         $result = $this->executeCommand($command);
-        
+
         if (!$result['success']) {
             return [];
         }
 
         $formats = [];
         $lines = explode("\n", $result['output']);
-        
+
+        $maxHeight = 0;
         foreach ($lines as $line) {
             if (preg_match('/^(\d+)\s+(\w+)\s+(\d+x\d+|\w+)\s+(.+)/', $line, $matches)) {
+                $resolution = $matches[3];
+                if (preg_match('/(\d+)x(\d+)/', $resolution, $resMatches)) {
+                    $height = (int)$resMatches[2];
+                    $maxHeight = max($maxHeight, $height);
+                }
                 $formats[] = [
                     'id' => $matches[1],
                     'extension' => $matches[2],
-                    'resolution' => $matches[3],
+                    'resolution' => $resolution,
                     'note' => trim($matches[4])
                 ];
             }
         }
-        
+
+        // Add max height to formats for frontend use
+        $formats['max_height'] = $maxHeight;
+
         return $formats;
     }
 }

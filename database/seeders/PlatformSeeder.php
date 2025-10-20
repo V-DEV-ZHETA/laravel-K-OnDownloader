@@ -42,7 +42,8 @@ class PlatformSeeder extends Seeder
                 'default_settings' => json_encode([
                     'quality' => 'best',
                     'format' => 'mp4',
-                    'audio_only' => false
+                    'audio_only' => false,
+                    'sessionid' => ''
                 ]),
             ],
             [
