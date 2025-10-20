@@ -57,8 +57,8 @@
             <!-- Download Options -->
             <div id="downloadOptions" class="hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Quality Selection -->
-                    <div>
+                    <!-- Quality Selection - Hide for Instagram -->
+                    <div id="qualitySection">
                         <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
                             <i class="fas fa-hd-video mr-1 text-glass-accent"></i>
                             Kualitas Unduhan
@@ -294,7 +294,13 @@ $(document).ready(function() {
     }
 
     function showVideoInfo(info) {
-        $('#videoThumbnail').attr('src', info.thumbnail || '');
+        // Use proxy for thumbnail to avoid CORS issues
+        let thumbnailUrl = '';
+        if (info.thumbnail) {
+            thumbnailUrl = '/thumbnail-proxy/' + btoa(info.thumbnail);
+        }
+
+        $('#videoThumbnail').attr('src', thumbnailUrl);
         $('#videoTitle').text(info.title || 'Unknown Title');
         $('#videoDuration').text(info.duration || 'Unknown Duration');
         $('#videoUploader').text(info.uploader || 'Unknown Uploader');
@@ -306,8 +312,33 @@ $(document).ready(function() {
     }
 
     function updatePlatformOptions() {
-        // Platform-specific options can be added here
-        // For now, we'll keep the same options for all platforms
+        // Remove quality selection for Instagram
+        if (currentPlatform === 'instagram') {
+            $('#qualitySection').remove();
+        } else {
+            // Re-add if not present and not Instagram
+            if ($('#qualitySection').length === 0) {
+                const qualityHtml = `
+                    <div id="qualitySection">
+                        <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
+                            <i class="fas fa-hd-video mr-1 text-glass-accent"></i>
+                            Kualitas Unduhan
+                        </label>
+                        <select id="quality"
+                                name="quality"
+                                class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
+                            <option value="best">Kualitas Terbaik</option>
+                            <option value="720p">720p HD</option>
+                            <option value="480p">480p SD</option>
+                            <option value="360p">360p</option>
+                            <option value="240p">240p</option>
+                            <option value="worst">Kualitas Terendah</option>
+                        </select>
+                    </div>
+                `;
+                $('#downloadOptions .grid').prepend(qualityHtml);
+            }
+        }
     }
 
     function loadRecentDownloads() {
