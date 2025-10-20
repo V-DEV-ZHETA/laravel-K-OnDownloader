@@ -160,6 +160,15 @@ $(document).ready(function() {
                 <option value="wav">WAV Audio</option>
                 <option value="m4a">M4A Audio</option>
             `);
+            $('#quality').html(`
+                <option value="best">Kualitas Terbaik</option>
+                <option value="320kbps">320kbps</option>
+                <option value="256kbps">256kbps</option>
+                <option value="192kbps">192kbps</option>
+                <option value="128kbps">128kbps</option>
+                <option value="worst">Kualitas Terendah</option>
+            `);
+            $('label[for="quality"]').html('<i class="fas fa- mr-1 text-glass-accent"></i> Kualitas Unduhan Audio');
         } else {
             $('#format').html(`
                 <option value="mp4">MP4 Video</option>
@@ -168,6 +177,15 @@ $(document).ready(function() {
                 <option value="wav">WAV Audio</option>
                 <option value="m4a">M4A Audio</option>
             `);
+            $('#quality').html(`
+                <option value="best">Kualitas Terbaik</option>
+                <option value="720p">720p HD</option>
+                <option value="480p">480p SD</option>
+                <option value="360p">360p</option>
+                <option value="240p">240p</option>
+                <option value="worst">Kualitas Terendah</option>
+            `);
+            $('label[for="quality"]').html('<i class="fas fa-hd-video mr-1 text-glass-accent"></i> Kualitas Unduhan');
         }
     });
 
