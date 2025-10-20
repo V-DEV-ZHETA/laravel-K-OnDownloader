@@ -4,37 +4,35 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto">
-    <div class="bg-white shadow-lg rounded-lg p-6">
-        <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">
-            {{-- <i class="fas fa-download mr-2"></i> --}}
-            {{-- Download Media --}}
+    <div class="glassmorphism-card rounded-lg p-6">
+        <h1 class="text-3xl font-bold text-glass-primary mb-6 text-center">
         </h1>
-        
+
         <form id="downloadForm" class="space-y-6">
             <!-- URL Input -->
             <div>
-                <label for="url" class="block text-sm font-medium text-gray-700 mb-2">
-                    <i class="fas fa-link mr-1"></i>
+                <label for="url" class="block text-sm font-medium text-glass-primary mb-2">
+                    <i class="fas fa-link mr-1 text-glass-accent"></i>
                     Media URL
                 </label>
-                <input type="url" 
-                       id="url" 
-                       name="url" 
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                <input type="url"
+                       id="url"
+                       name="url"
+                       class="glassmorphism-input w-full px-4 py-3 rounded-lg text-glass-primary placeholder-glass-secondary"
                        placeholder="Tempel Url Youtube, Tiktok, Instagram, Dan Facebook Disini..."
                        required>
-                <p class="mt-1 text-sm text-gray-500">Supports YouTube, TikTok, Instagram, Dan Facebook</p>
+                <p class="mt-1 text-sm text-glass-secondary">Supports YouTube, TikTok, Instagram, Dan Facebook</p>
             </div>
 
             <!-- Platform Selection -->
             <div>
-                <label for="platform" class="block text-sm font-medium text-gray-700 mb-2">
-                    <i class="fas fa-globe mr-1"></i>
+                <label for="platform" class="block text-sm font-medium text-glass-primary mb-2">
+                    <i class="fas fa-globe mr-1 text-glass-accent"></i>
                     Platform (Deteksi Otomatis)
                 </label>
-                <select id="platform" 
-                        name="platform" 
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select id="platform"
+                        name="platform"
+                        class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
                     <option value="">Auto-detect platform</option>
                     @foreach($platforms as $platform)
                         <option value="{{ $platform->name }}" data-icon="{{ $platform->icon }}">
@@ -45,13 +43,13 @@
             </div>
 
             <!-- Video Info Display -->
-            <div id="videoInfo" class="hidden bg-gray-50 rounded-lg p-4">
+            <div id="videoInfo" class="hidden glassmorphism-card rounded-lg p-4">
                 <div class="flex items-start space-x-4">
-                    <img id="videoThumbnail" src="" alt="Video thumbnail" class="w-32 h-24 object-cover rounded-lg">
+                    <img id="videoThumbnail" src="" alt="Video thumbnail" class="w-32 h-24 object-cover rounded-lg glassmorphism-card">
                     <div class="flex-1">
-                        <h3 id="videoTitle" class="text-lg font-semibold text-gray-900"></h3>
-                        <p id="videoDuration" class="text-sm text-gray-600"></p>
-                        <p id="videoUploader" class="text-sm text-gray-500"></p>
+                        <h3 id="videoTitle" class="text-lg font-semibold text-glass-primary"></h3>
+                        <p id="videoDuration" class="text-sm text-glass-secondary"></p>
+                        <p id="videoUploader" class="text-sm text-glass-secondary"></p>
                     </div>
                 </div>
             </div>
@@ -60,13 +58,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Quality Selection -->
                 <div>
-                    <label for="quality" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-hd-video mr-1"></i>
+                    <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
+                        <i class="fas fa-hd-video mr-1 text-glass-accent"></i>
                         Kualitas Unduhan
                     </label>
-                    <select id="quality" 
-                            name="quality" 
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <select id="quality"
+                            name="quality"
+                            class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
                         <option value="best">Kualitas Terbaik</option>
                         <option value="720p">720p HD</option>
                         <option value="480p">480p SD</option>
@@ -78,13 +76,13 @@
 
                 <!-- Format Selection -->
                 <div>
-                    <label for="format" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-file mr-1"></i>
+                    <label for="format" class="block text-sm font-medium text-glass-primary mb-2">
+                        <i class="fas fa-file mr-1 text-glass-accent"></i>
                         Format Unduhan
                     </label>
-                    <select id="format" 
-                            name="format" 
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <select id="format"
+                            name="format"
+                            class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
                         <option value="mp4">MP4 Video</option>
                         <option value="webm">WebM Video</option>
                         <option value="mp3">MP3 Audio</option>
@@ -97,22 +95,22 @@
             <!-- Additional Options -->
             <div class="space-y-4">
                 <div class="flex items-center">
-                    <input type="checkbox" 
-                           id="audioOnly" 
-                           name="audio_only" 
-                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                    <label for="audioOnly" class="ml-2 block text-sm text-gray-700">
-                        <i class="fas fa-music mr-1"></i>
-                        Audio Saja 
+                    <input type="checkbox"
+                           id="audioOnly"
+                           name="audio_only"
+                           class="h-4 w-4 text-glass-accent focus:ring-glass-accent border-glass-secondary rounded">
+                    <label for="audioOnly" class="ml-2 block text-sm text-glass-primary">
+                        <i class="fas fa-music mr-1 text-glass-accent"></i>
+                        Audio Saja
                     </label>
                 </div>
             </div>
 
             <!-- Submit Button -->
             <div class="text-center">
-                <button type="submit" 
+                <button type="submit"
                         id="downloadBtn"
-                        class="bg-green-400 hover:bg-green-500 text-white font-bold py-3 px-8 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                        class="glassmorphism-button text-white font-bold py-3 px-8 rounded-lg glass-hover">
                     <i class="fas fa-download mr-2"></i>
                     Mulai Download
                 </button>
@@ -121,9 +119,9 @@
     </div>
 
     <!-- Recent Downloads -->
-    <div class="mt-8 bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">
-            <i class="fas fa-history mr-2"></i>
+    <div class="mt-8 glassmorphism-card rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-glass-primary mb-4">
+            <i class="fas fa-history mr-2 text-glass-accent"></i>
             Histori Download
         </h2>
         <div id="recentDownloads" class="space-y-4">
@@ -280,20 +278,20 @@ $(document).ready(function() {
                     let html = '';
                     response.downloads.slice(0, 5).forEach(function(download) {
                         html += `
-                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                            <div class="glassmorphism-card rounded-lg shadow-sm border border-glass-secondary p-4 glass-hover">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
-                                        <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                                            <i class="${download.platform_icon || 'fas fa-video'} text-lg"></i>
+                                        <div class="w-12 h-12 glassmorphism-card rounded-lg flex items-center justify-center">
+                                            <i class="${download.platform_icon || 'fas fa-video'} text-lg text-glass-accent"></i>
                                         </div>
                                         <div>
-                                            <h4 class="font-medium text-gray-900 truncate">${download.title || 'Unknown Title'}</h4>
-                                            <p class="text-sm text-gray-500">${download.platform_display_name || download.platform} • ${download.created_at}</p>
+                                            <h4 class="font-medium text-glass-primary truncate">${download.title || 'Unknown Title'}</h4>
+                                            <p class="text-sm text-glass-secondary">${download.platform_display_name || download.platform} • ${download.created_at}</p>
                                         </div>
                                     </div>
                                     <div class="flex items-center space-x-2">
-                                        <span class="px-2 py-1 text-xs font-medium rounded-full ${download.status_badge_class || 'bg-gray-100 text-gray-800'}">${download.status_badge || download.status}</span>
-                                        ${download.status === 'completed' ? `<a href="/downloads/${download.id}/download" class="text-green-400 hover:text-green-500 text-sm font-medium">Download</a>` : ''}
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full glassmorphism-card ${download.status_badge_class || 'text-glass-secondary'}">${download.status_badge || download.status}</span>
+                                        ${download.status === 'completed' ? `<a href="/downloads/${download.id}/download" class="text-glass-accent hover:text-glass-primary text-sm font-medium glass-hover p-2 rounded-lg">Download</a>` : ''}
                                     </div>
                                 </div>
                             </div>
@@ -302,7 +300,7 @@ $(document).ready(function() {
                     $('#recentDownloads').html(html);
                 } else {
                     $('#recentDownloads').html(`
-                        <div class="text-center text-gray-500 py-8">
+                        <div class="text-center text-glass-secondary py-8">
                             <i class="fas fa-download text-4xl mb-4"></i>
                             <p>No recent downloads yet</p>
                         </div>
