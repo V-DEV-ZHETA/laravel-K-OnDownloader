@@ -3,10 +3,10 @@
 @section('title', $platform->display_name . ' Details - K-OnDownloader')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="glassmorphism-card rounded-lg p-6">
-        <div class="flex justify-between items-center mb-6">
-            <div class="flex items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 sm:mb-6">
+            <div class="flex flex-wrap items-center gap-2">
                 <a href="{{ route('platforms.index') }}"
                    class="text-glass-secondary hover:text-glass-primary mr-4 glass-hover p-2 rounded-lg">
                     <i class="fas fa-arrow-left text-xl"></i>
@@ -19,7 +19,7 @@
                     <p class="text-glass-secondary mt-1">Platform information and statistics</p>
                 </div>
             </div>
-            <div class="flex space-x-2">
+            <div class="flex flex-wrap gap-2">
                 <a href="{{ route('settings.show', $platform) }}"
                    class="glassmorphism-button text-white font-bold py-2 px-4 rounded-lg glass-hover">
                     <i class="fas fa-cog mr-1"></i>
@@ -41,7 +41,7 @@
         <!-- Platform Status -->
         <div class="glassmorphism-card rounded-lg p-6 mb-6">
             <h3 class="text-lg font-semibold text-glass-primary mb-4">Platform Status</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 <div>
                     <label class="block text-sm font-medium text-glass-primary">Status</label>
                     <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full glassmorphism-card

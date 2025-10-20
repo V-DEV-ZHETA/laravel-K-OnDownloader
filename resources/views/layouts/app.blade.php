@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/enhanced-styles.css') }}">
     @vite(['resources/css/app.css'])
 
     @stack('styles')
@@ -25,7 +26,7 @@
     <nav class="glassmorphism-nav sticky top-0 z-50">
         <div class="mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex items-center">
+                <div class="flex flex-wrap items-center gap-2">
                     <a href="{{ route('downloads.create') }}" class="flex items-center text-glass-primary text-3xl font-bold text-shadow glass-hover">
                         <i class="fas fa-cat mr-2 text-glass-accent"></i>
                         <span style="font-family: 'M PLUS Rounded 1c', sans-serif;">NekoDrop</span>
@@ -33,7 +34,7 @@
                 </div>
 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-4">
+                <div class="hidden md:flex flex-wrap items-center gap-2 sm:gap-4">
                     <a href="{{ route('downloads.index') }}" class="text-glass-primary hover:text-glass-accent px-3 py-2 rounded-lg text-sm font-bold glass-hover transition-all duration-300">
                         <i class="fas fa-list mr-1"></i> DOWNLOAD
                     </a>
@@ -52,7 +53,7 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
+                <div class="md:hidden flex flex-wrap items-center gap-2">
                     <button id="mobile-menu-button" class="text-glass-primary hover:text-glass-accent p-2 rounded-lg glass-hover transition-all duration-300">
                         <i class="fas fa-bars text-lg"></i>
                     </button>
@@ -195,11 +196,11 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type} fade-in`;
             toast.innerHTML = `
-                <div class="flex items-start">
+                <div class="flex flex-col items-start gap-2">
                     <div class="flex-shrink-0">
                         <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} text-lg mr-3"></i>
                     </div>
-                    <div class="flex-1">
+                    <div class="flex-1 mt-4 sm:mt-0">
                         <p class="text-sm font-medium">${message}</p>
                     </div>
                     <button onclick="this.parentElement.parentElement.remove()" class="ml-3 flex-shrink-0">

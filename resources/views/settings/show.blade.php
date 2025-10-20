@@ -3,10 +3,10 @@
 @section('title', $platform->display_name . ' Settings - K-OnDownloader')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="glassmorphism-card rounded-lg p-6">
-        <div class="flex justify-between items-center mb-6">
-            <div class="flex items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 sm:mb-6">
+            <div class="flex flex-wrap items-center gap-2">
                 <a href="{{ route('settings.index') }}"
                    class="text-glass-secondary hover:text-glass-primary mr-4 glass-hover p-2 rounded-lg">
                     <i class="fas fa-arrow-left text-xl"></i>
@@ -26,7 +26,7 @@
             </button>
         </div>
 
-        <form id="settingsForm" class="space-y-6">
+        <form id="settingsForm" class="space-y-4 sm:space-y-6">
             <!-- Quality Settings -->
             <div class="glassmorphism-card rounded-lg p-6">
                 <h3 class="text-lg font-semibold text-glass-primary mb-4">
@@ -34,7 +34,7 @@
                     Quality Settings
                 </h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <div>
                         <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
                             Default Quality
@@ -75,9 +75,9 @@
                     Platform-specific Settings
                 </h3>
 
-                <div class="space-y-4">
+                <div class="space-y-3 sm:space-y-4">
                     @if($platform->name === 'youtube')
-                        <div class="flex items-center">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="checkbox"
                                    id="subtitles"
                                    name="settings[subtitles]"
@@ -87,7 +87,7 @@
                             </label>
                         </div>
 
-                        <div class="flex items-center">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="checkbox"
                                    id="embed_metadata"
                                    name="settings[embed_metadata]"
@@ -99,7 +99,7 @@
                     @endif
 
                     @if($platform->name === 'tiktok')
-                        <div class="flex items-center">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="checkbox"
                                    id="watermark"
                                    name="settings[watermark]"
@@ -111,7 +111,7 @@
                     @endif
 
                     @if($platform->name === 'instagram')
-                        <div class="flex items-center">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="checkbox"
                                    id="stories"
                                    name="settings[stories]"
@@ -137,7 +137,7 @@
                     @endif
 
                     @if($platform->name === 'facebook')
-                        <div class="flex items-center">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="checkbox"
                                    id="subtitles"
                                    name="settings[subtitles]"
@@ -148,7 +148,7 @@
                         </div>
                     @endif
 
-                    <div class="flex items-center">
+                    <div class="flex flex-wrap items-center gap-2">
                         <input type="checkbox"
                                id="audio_only"
                                name="settings[audio_only]"
