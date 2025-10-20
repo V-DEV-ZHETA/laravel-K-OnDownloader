@@ -6,29 +6,41 @@
 <div class="max-w-4xl mx-auto">
     <div class="glassmorphism-card rounded-lg p-6">
         <h1 class="text-3xl font-bold text-glass-primary mb-6 text-center">
+            <i class="fas fa-download mr-2 text-glass-accent"></i>
+            Download Media
         </h1>
 
         <form id="downloadForm" class="space-y-6">
-            <!-- URL Input -->
+            <!-- URL Input with Drag & Drop -->
             <div>
                 <label for="url" class="block text-sm font-medium text-glass-primary mb-2">
                     <i class="fas fa-link mr-1 text-glass-accent"></i>
                     Media URL
                 </label>
-                <input type="url"
-                       id="url"
-                       name="url"
-                       class="glassmorphism-input w-full px-4 py-3 rounded-lg text-glass-primary placeholder-glass-secondary"
-                       placeholder="Tempel Url Youtube, Tiktok, Instagram, Dan Facebook Disini..."
-                       required>
-                <p class="mt-1 text-sm text-glass-secondary">Supports YouTube, TikTok, Instagram, Dan Facebook</p>
+                <div id="urlDropZone" class="relative">
+                    <input type="url"
+                           id="url"
+                           name="url"
+                           class="glassmorphism-input w-full px-4 py-3 rounded-lg text-glass-primary placeholder-glass-secondary"
+                           placeholder="Paste URL or drag & drop here..."
+                           required>
+                    <div class="absolute inset-0 rounded-lg border-2 border-dashed border-glass-secondary opacity-0 hover:opacity-50 transition-opacity duration-300 pointer-events-none drag-over:border-glass-accent drag-over:opacity-100">
+                        <div class="flex items-center justify-center h-full">
+                            <div class="text-center">
+                                <i class="fas fa-cloud-upload-alt text-2xl text-glass-accent mb-2"></i>
+                                <p class="text-sm text-glass-primary">Drop URL here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-1 text-sm text-glass-secondary">Supports YouTube, TikTok, Instagram, and Facebook</p>
             </div>
 
             <!-- Platform Selection -->
             <div>
                 <label for="platform" class="block text-sm font-medium text-glass-primary mb-2">
                     <i class="fas fa-globe mr-1 text-glass-accent"></i>
-                    Platform (Deteksi Otomatis)
+                    Platform (Auto-detect)
                 </label>
                 <select id="platform"
                         name="platform"
@@ -43,35 +55,40 @@
             </div>
 
             <!-- Video Info Display -->
-            <div id="videoInfo" class="hidden glassmorphism-card rounded-lg p-4">
+            <div id="videoInfo" class="hidden glassmorphism-card rounded-lg p-4 fade-in">
                 <div class="flex items-start space-x-4">
-                    <img id="videoThumbnail" src="" alt="Video thumbnail" class="w-32 h-24 object-cover rounded-lg glassmorphism-card">
+                    <div id="videoThumbnail" class="w-32 h-24 glassmorphism-card rounded-lg flex items-center justify-center">
+                        <i class="fas fa-spinner fa-spin text-glass-accent"></i>
+                    </div>
                     <div class="flex-1">
-                        <h3 id="videoTitle" class="text-lg font-semibold text-glass-primary"></h3>
+                        <h3 id="videoTitle" class="text-lg font-semibold text-glass-primary">Loading...</h3>
                         <p id="videoDuration" class="text-sm text-glass-secondary"></p>
                         <p id="videoUploader" class="text-sm text-glass-secondary"></p>
+                        <div class="mt-2">
+                            <span id="videoViews" class="badge-secondary text-xs"></span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Download Options -->
-            <div id="downloadOptions" class="hidden">
+            <div id="downloadOptions" class="hidden fade-in">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Quality Selection - Hide for Instagram -->
                     <div id="qualitySection">
                         <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
                             <i class="fas fa-hd-video mr-1 text-glass-accent"></i>
-                            Kualitas Unduhan
+                            Download Quality
                         </label>
                         <select id="quality"
                                 name="quality"
                                 class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
-                            <option value="best">Kualitas Terbaik</option>
+                            <option value="best">Best Quality</option>
                             <option value="720p">720p HD</option>
                             <option value="480p">480p SD</option>
                             <option value="360p">360p</option>
                             <option value="240p">240p</option>
-                            <option value="worst">Kualitas Terendah</option>
+                            <option value="worst">Lowest Quality</option>
                         </select>
                     </div>
 
@@ -79,7 +96,7 @@
                     <div>
                         <label for="format" class="block text-sm font-medium text-glass-primary mb-2">
                             <i class="fas fa-file mr-1 text-glass-accent"></i>
-                            Format Unduhan
+                            Download Format
                         </label>
                         <select id="format"
                                 name="format"
@@ -94,7 +111,7 @@
                 </div>
 
                 <!-- Additional Options -->
-                <div class="space-y-4">
+                <div class="space-y-4 mt-4">
                     <div class="flex items-center">
                         <input type="checkbox"
                                id="audioOnly"
@@ -102,7 +119,7 @@
                                class="h-4 w-4 text-glass-accent focus:ring-glass-accent border-glass-secondary rounded">
                         <label for="audioOnly" class="ml-2 block text-sm text-glass-primary">
                             <i class="fas fa-music mr-1 text-glass-accent"></i>
-                            Audio Saja
+                            Audio Only
                         </label>
                     </div>
                 </div>
@@ -114,7 +131,7 @@
                         id="downloadBtn"
                         class="glassmorphism-button text-white font-bold py-3 px-8 rounded-lg glass-hover">
                     <i class="fas fa-download mr-2"></i>
-                    Mulai Download
+                    Start Download
                 </button>
             </div>
         </form>
@@ -124,7 +141,7 @@
     <div class="mt-8 glassmorphism-card rounded-lg p-6">
         <h2 class="text-2xl font-bold text-glass-primary mb-4">
             <i class="fas fa-history mr-2 text-glass-accent"></i>
-            Histori Download
+            Recent Downloads
         </h2>
         <div id="recentDownloads" class="space-y-4">
             <!-- Recent downloads will be loaded here -->
@@ -137,6 +154,53 @@
 <script>
 $(document).ready(function() {
     let currentPlatform = null;
+    let dragCounter = 0;
+
+    // Drag and Drop functionality
+    const dropZone = document.getElementById('urlDropZone');
+    const urlInput = document.getElementById('url');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Highlight drop zone when dragging over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle drop
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function highlight(e) {
+        dropZone.classList.add('drag-over');
+    }
+
+    function unhighlight(e) {
+        dropZone.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const url = dt.getData('text/plain');
+
+        if (url) {
+            urlInput.value = url;
+            urlInput.dispatchEvent(new Event('input'));
+            showToast('URL pasted from drag & drop!', 'success');
+        }
+    }
 
     // Auto-detect platform when URL changes
     $('#url').on('input', function() {
@@ -170,7 +234,7 @@ $(document).ready(function() {
                 <option value="192kbps">192kbps</option>
                 <option value="128kbps">128kbps</option>
             `);
-            $('label[for="quality"]').html('<i class="fas fa- mr-1 text-glass-accent"></i> Kualitas Unduhan Audio');
+            $('label[for="quality"]').html('<i class="fas fa-music mr-1 text-glass-accent"></i> Audio Quality');
         } else {
             $('#format').html(`
                 <option value="mp4">MP4 Video</option>
@@ -180,12 +244,14 @@ $(document).ready(function() {
                 <option value="m4a">M4A Audio</option>
             `);
             $('#quality').html(`
+                <option value="best">Best Quality</option>
                 <option value="720p">720p HD</option>
                 <option value="480p">480p SD</option>
                 <option value="360p">360p</option>
                 <option value="240p">240p</option>
+                <option value="worst">Lowest Quality</option>
             `);
-            $('label[for="quality"]').html('<i class="fas fa-hd-video mr-1 text-glass-accent"></i> Kualitas Unduhan');
+            $('label[for="quality"]').html('<i class="fas fa-hd-video mr-1 text-glass-accent"></i> Video Quality');
         }
     });
 
@@ -213,12 +279,12 @@ $(document).ready(function() {
             data: JSON.stringify(formData),
             success: function(response) {
                 if (response.success) {
-                    showAlert('Download started successfully!', 'success');
+                    showToast('Download started successfully!', 'success');
                     $('#downloadForm')[0].reset();
                     hideVideoInfo();
                     loadRecentDownloads();
                 } else {
-                    showAlert(response.message || 'Failed to start download', 'error');
+                    showToast(response.message || 'Failed to start download', 'error');
                 }
             },
             error: function(xhr) {
@@ -235,7 +301,7 @@ $(document).ready(function() {
                     errorMessage = 'Server error. Please try again later.';
                 }
 
-                showAlert(errorMessage, 'error');
+                showToast(errorMessage, 'error');
             },
             complete: function() {
                 hideLoading(submitBtn, originalText);
@@ -247,6 +313,11 @@ $(document).ready(function() {
     loadRecentDownloads();
 
     function detectPlatform(url) {
+        // Show loading state
+        $('#videoInfo').removeClass('hidden');
+        $('#videoThumbnail').html('<i class="fas fa-spinner fa-spin text-glass-accent"></i>');
+        $('#videoTitle').text('Detecting platform...');
+
         $.ajax({
             url: '/api/video-info',
             method: 'POST',
@@ -263,11 +334,15 @@ $(document).ready(function() {
                         // Update quality options based on video formats
                         updateQualityOptions(url, response.platform);
                     }
+                } else {
+                    hideVideoInfo();
+                    showToast('Could not detect platform or video info', 'warning');
                 }
             },
             error: function(xhr) {
                 console.error('Platform detection error:', xhr);
                 hideVideoInfo();
+                showToast('Failed to detect platform', 'error');
             }
         });
     }
@@ -300,10 +375,17 @@ $(document).ready(function() {
             thumbnailUrl = '/thumbnail-proxy/' + btoa(info.thumbnail);
         }
 
-        $('#videoThumbnail').attr('src', thumbnailUrl);
+        $('#videoThumbnail').html(`<img src="${thumbnailUrl}" alt="Video thumbnail" class="w-full h-full object-cover rounded-lg">`);
         $('#videoTitle').text(info.title || 'Unknown Title');
         $('#videoDuration').text(info.duration || 'Unknown Duration');
         $('#videoUploader').text(info.uploader || 'Unknown Uploader');
+
+        if (info.view_count) {
+            $('#videoViews').text(`${info.view_count} views`).show();
+        } else {
+            $('#videoViews').hide();
+        }
+
         $('#videoInfo').removeClass('hidden');
     }
 
@@ -322,17 +404,17 @@ $(document).ready(function() {
                     <div id="qualitySection">
                         <label for="quality" class="block text-sm font-medium text-glass-primary mb-2">
                             <i class="fas fa-hd-video mr-1 text-glass-accent"></i>
-                            Kualitas Unduhan
+                            Download Quality
                         </label>
                         <select id="quality"
                                 name="quality"
                                 class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
-                            <option value="best">Kualitas Terbaik</option>
+                            <option value="best">Best Quality</option>
                             <option value="720p">720p HD</option>
                             <option value="480p">480p SD</option>
                             <option value="360p">360p</option>
                             <option value="240p">240p</option>
-                            <option value="worst">Kualitas Terendah</option>
+                            <option value="worst">Lowest Quality</option>
                         </select>
                     </div>
                 `;
@@ -363,7 +445,7 @@ $(document).ready(function() {
                                     </div>
                                     <div class="flex items-center space-x-2">
                                         <span class="px-2 py-1 text-xs font-medium rounded-full glassmorphism-card ${download.status_badge_class || 'text-glass-secondary'}">${download.status_badge || download.status}</span>
-                                        ${download.status === 'completed' ? `<a href="/downloads/${download.id}/download" class="text-glass-accent hover:text-glass-primary text-sm font-medium glass-hover p-2 rounded-lg">Download</a>` : ''}
+                                        ${download.status === 'completed' ? `<a href="/downloads/${download.id}/download" class="text-glass-accent hover:text-glass-primary text-sm font-medium glass-hover p-2 rounded-lg tooltip" title="Download file"><i class="fas fa-download mr-1"></i>Download</a>` : ''}
                                     </div>
                                 </div>
                             </div>
@@ -375,6 +457,7 @@ $(document).ready(function() {
                         <div class="text-center text-glass-secondary py-8">
                             <i class="fas fa-download text-4xl mb-4"></i>
                             <p>No recent downloads yet</p>
+                            <p class="text-sm mt-2">Your downloaded media will appear here</p>
                         </div>
                     `);
                 }
