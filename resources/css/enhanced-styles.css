@@ -74,14 +74,14 @@
     --color-info: #2563EB;
     --color-info-rgb: 37, 99, 235;
 
-    /* Enhanced Dark Mode Colors */
-    --color-dark-bg: #1F2937;
-    --color-dark-bg-rgb: 31, 41, 55;
-    --color-dark-surface: #374151;
-    --color-dark-surface-rgb: 55, 65, 81;
-    --color-dark-primary: #FB923C;
-    --color-dark-secondary: #FBBF24;
-    --color-dark-accent: #4ADE80;
+    /* Enhanced Dark Mode Colors - Warmer and More Pleasant */
+    --color-dark-bg: #1a1a1a;
+    --color-dark-bg-rgb: 26, 26, 26;
+    --color-dark-surface: #2a2a2a;
+    --color-dark-surface-rgb: 42, 42, 42;
+    --color-dark-primary: #fbbf24;
+    --color-dark-secondary: #f59e0b;
+    --color-dark-accent: #34d399;
 }
 
 /* Enhanced Glassmorphism Effects */
@@ -981,4 +981,5 @@ textarea:focus-visible {
     .glassmorphism-input {
         background: var(--color-surface) !important;
         border: 2px solid var(--color-gray-400) !important;
+    }
 }

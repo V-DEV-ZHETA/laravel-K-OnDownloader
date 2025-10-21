@@ -81,14 +81,14 @@
     --color-info: #2563EB;
     --color-info-rgb: 37, 99, 235;
 
-    /* Dark Mode Colors - More Relaxed */
-    --color-dark-bg: #1F2937;
-    --color-dark-bg-rgb: 31, 41, 55;
-    --color-dark-surface: #374151;
-    --color-dark-surface-rgb: 55, 65, 81;
-    --color-dark-primary: #F59E0B;
-    --color-dark-secondary: #EAB308;
-    --color-dark-accent: #10B981;
+    /* Dark Mode Colors - Warmer and More Pleasant */
+    --color-dark-bg: #1a1a1a;
+    --color-dark-bg-rgb: 26, 26, 26;
+    --color-dark-surface: #2a2a2a;
+    --color-dark-surface-rgb: 42, 42, 42;
+    --color-dark-primary: #fbbf24;
+    --color-dark-secondary: #f59e0b;
+    --color-dark-accent: #34d399;
 }
 
 /* Dark Mode Support */
@@ -100,15 +100,15 @@
     --color-primary: var(--color-dark-primary);
     --color-secondary: var(--color-dark-secondary);
     --color-accent: var(--color-dark-accent);
-    --color-dark: #f7fafc;
-    --color-gray-50: #374151;
-    --color-gray-100: #4a5568;
-    --color-gray-200: #718096;
-    --color-gray-300: #a0aec0;
-    --color-gray-400: #cbd5e0;
-    --color-gray-500: #e2e8f0;
-    --color-gray-600: #f7fafc;
-    --color-gray-700: #ffffff;
+    --color-dark: #e5e5e5;
+    --color-gray-50: #2a2a2a;
+    --color-gray-100: #404040;
+    --color-gray-200: #525252;
+    --color-gray-300: #737373;
+    --color-gray-400: #a3a3a3;
+    --color-gray-500: #d4d4d4;
+    --color-gray-600: #e5e5e5;
+    --color-gray-700: #f5f5f5;
 }
 
 /* Glassmorphism Styles - More Subtle */

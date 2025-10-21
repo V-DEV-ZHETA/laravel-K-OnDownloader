@@ -233,7 +233,7 @@
             <div class="text-sm text-glass-secondary">Platforms</div>
         </div>
         <div class="glassmorphism-card rounded-xl p-4 text-center glass-hover">
-            <div class="text-3xl font-bold text-glass-accent mb-1">HD</div>
+            <div class="text-3xl font-bold text-glass-accent mb-1">Up To 4K</div>
             <div class="text-sm text-glass-secondary">Quality</div>
         </div>
         <div class="glassmorphism-card rounded-xl p-4 text-center glass-hover">
@@ -241,8 +241,8 @@
             <div class="text-sm text-glass-secondary">Downloads</div>
         </div>
         <div class="glassmorphism-card rounded-xl p-4 text-center glass-hover">
-            <div class="text-3xl font-bold text-glass-accent mb-1">Free</div>
-            <div class="text-sm text-glass-secondary">Forever</div>
+            <div class="text-3xl font-bold text-glass-accent mb-1">Gratis</div>
+            <div class="text-sm text-glass-secondary">Selamanya</div>
         </div>
     </div>
 
