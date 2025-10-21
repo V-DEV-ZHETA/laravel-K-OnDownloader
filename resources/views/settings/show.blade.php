@@ -59,7 +59,6 @@
                                 name="settings[format]"
                                 class="glass-select w-full px-4 py-3 rounded-lg text-glass-primary">
                             <option value="mp4">MP4 Video</option>
-                            <option value="webm">WebM Video</option>
                             <option value="mp3">MP3 Audio</option>
                             <option value="wav">WAV Audio</option>
                             <option value="m4a">M4A Audio</option>

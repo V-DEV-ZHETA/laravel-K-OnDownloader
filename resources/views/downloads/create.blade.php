@@ -169,7 +169,6 @@
                                     name="format"
                                     class="glass-select w-full px-5 py-4 rounded-xl text-glass-primary transition-all duration-300 border-2 border-transparent focus:border-green-400 text-base">
                                 <option value="mp4">🎬 MP4 Video (Universal)</option>
-                                <option value="webm">🌐 WebM Video (Lebih Kecil)</option>
                                 <option value="mp3">🎵 MP3 Audio</option>
                                 <option value="m4a">🎶 M4A Audio (Lebih Baik)</option>
                                 <option value="wav">🎼 WAV Audio (Tanpa Kompresi)</option>
@@ -781,7 +780,6 @@ input:checked + .futuristic-slider:before {
         } else {
             $('#format').html(`
                 <option value="mp4">🎬 MP4 Video (Universal)</option>
-                <option value="webm">🌐 WebM Video (Lebih Kecil)</option>
                 <option value="mp3">🎵 MP3 Audio</option>
                 <option value="m4a">🎶 M4A Audio (Lebih Baik)</option>
                 <option value="wav">🎼 WAV Audio (Tanpa Kompresi)</option>

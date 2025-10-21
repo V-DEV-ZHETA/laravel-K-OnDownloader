@@ -62,7 +62,6 @@ return [
     
     'format_options' => [
         'mp4' => 'MP4 Video',
-        'webm' => 'WebM Video',
         'mp3' => 'MP3 Audio',
         'wav' => 'WAV Audio',
         'm4a' => 'M4A Audio',

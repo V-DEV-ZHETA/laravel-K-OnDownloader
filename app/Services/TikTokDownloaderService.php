@@ -11,8 +11,12 @@ class TikTokDownloaderService extends BaseDownloaderService
         'quality' => 'best',
         'format' => 'mp4',
         'audio_only' => false,
-        'watermark' => false
+        'watermark' => false,
+        'embed_metadata' => true
     ];
+
+    // Supported audio formats
+    protected array $audioFormats = ['mp3', 'm4a', 'wav', 'opus', 'flac'];
 
     public function getVideoInfo(string $url): array
     {
@@ -92,33 +96,56 @@ class TikTokDownloaderService extends BaseDownloaderService
         $format = $options['format'] ?? $this->getSetting('format', 'mp4');
         $audioOnly = $options['audio_only'] ?? $this->getSetting('audio_only', false);
         $watermark = $options['watermark'] ?? $this->getSetting('watermark', false);
+        $embedMetadata = $options['embed_metadata'] ?? $this->getSetting('embed_metadata', true);
+
+        // Auto-detect audio only mode based on format
+        if (in_array(strtolower($format), $this->audioFormats)) {
+            $audioOnly = true;
+        }
 
         $command = ['yt-dlp'];
 
-        // Output path - use specific extension for audio files
+        // Output path with proper extension
+        $command[] = '-o';
         if ($audioOnly) {
-            $command[] = '-o';
             $command[] = $this->downloadPath . '/%(title)s.' . $format;
         } else {
-            $command[] = '-o';
             $command[] = $this->downloadPath . '/%(title)s.%(ext)s';
         }
 
-        // Quality selection
+        // Audio download configuration
         if ($audioOnly) {
-            $command[] = '--format';
-            $command[] = 'bestaudio';
             $command[] = '--extract-audio';
             $command[] = '--audio-format';
             $command[] = $format;
             $command[] = '--audio-quality';
             $command[] = '0'; // Best audio quality
-            $command[] = '--no-embed-subs'; // Don't embed subtitles
-            $command[] = '--keep-video'; // Keep video file if audio extraction fails
-            $command[] = 'false';
+            
+            // For MP3, add additional quality settings
+            if (strtolower($format) === 'mp3') {
+                $command[] = '--postprocessor-args';
+                $command[] = 'ffmpeg:-b:a 320k'; // High quality MP3 (320kbps)
+            }
+            
+            $command[] = '--format';
+            $command[] = 'bestaudio/best';
         } else {
+            // Video download configuration
             $command[] = '--format';
             $command[] = $this->getQualityFormat($quality);
+        }
+
+        // Metadata embedding
+        if ($embedMetadata) {
+            $command[] = '--embed-metadata';
+            if (!$audioOnly) {
+                $command[] = '--embed-thumbnail';
+            } else {
+                // For audio files, embed thumbnail as cover art
+                $command[] = '--embed-thumbnail';
+                $command[] = '--ppa';
+                $command[] = 'EmbedThumbnail+ffmpeg_o:-c:v mjpeg -vf crop="\'if(gt(ih,iw),iw,ih)\':\'if(gt(iw,ih),ih,iw)\'"';
+            }
         }
 
         // Watermark handling - remove this option as it's not supported in newer yt-dlp versions
@@ -129,6 +156,7 @@ class TikTokDownloaderService extends BaseDownloaderService
         // Additional options
         $command[] = '--no-playlist';
         $command[] = '--ignore-errors';
+        $command[] = '--no-warnings';
 
         $command[] = $url;
 
@@ -152,15 +180,38 @@ class TikTokDownloaderService extends BaseDownloaderService
         return sprintf('%02d:%02d', $minutes, $seconds);
     }
 
-    protected function extractFilePath(string $output): ?string
+    protected function extractFilePath(string $output, array $options = []): ?string
     {
         $lines = explode("\n", $output);
+        $format = $options['format'] ?? 'mp4';
+        $audioOnly = in_array(strtolower($format), $this->audioFormats);
+        
+        // Look for the final destination after all post-processing
+        $destinations = [];
         foreach ($lines as $line) {
             if (strpos($line, '[download] Destination:') !== false) {
-                return trim(str_replace('[download] Destination:', '', $line));
+                $destinations[] = trim(str_replace('[download] Destination:', '', $line));
+            }
+            if (strpos($line, '[ExtractAudio] Destination:') !== false) {
+                return trim(str_replace('[ExtractAudio] Destination:', '', $line));
+            }
+            if (strpos($line, '[ffmpeg] Destination:') !== false) {
+                return trim(str_replace('[ffmpeg] Destination:', '', $line));
             }
         }
-        return null;
+        
+        // If audio only, look for file with correct extension
+        if ($audioOnly && !empty($destinations)) {
+            $lastDestination = end($destinations);
+            $pathInfo = pathinfo($lastDestination);
+            $expectedPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.' . $format;
+            
+            if (file_exists($expectedPath)) {
+                return $expectedPath;
+            }
+        }
+        
+        return !empty($destinations) ? end($destinations) : null;
     }
 
     public function getAvailableFormats(string $url): array
@@ -172,26 +223,53 @@ class TikTokDownloaderService extends BaseDownloaderService
         ];
 
         $result = $this->executeCommand($command);
-        
+
         if (!$result['success']) {
             return [];
         }
 
         $formats = [];
         $lines = explode("\n", $result['output']);
-        
+
+        $maxHeight = 0;
         foreach ($lines as $line) {
             if (preg_match('/^(\d+)\s+(\w+)\s+(\d+x\d+|\w+)\s+(.+)/', $line, $matches)) {
+                $resolution = $matches[3];
+                if (preg_match('/(\d+)x(\d+)/', $resolution, $resMatches)) {
+                    $height = (int)$resMatches[2];
+                    $maxHeight = max($maxHeight, $height);
+                }
                 $formats[] = [
                     'id' => $matches[1],
                     'extension' => $matches[2],
-                    'resolution' => $matches[3],
+                    'resolution' => $resolution,
                     'note' => trim($matches[4])
                 ];
             }
         }
-        
+
+        $formats['max_height'] = $maxHeight;
+
         return $formats;
+    }
+
+    /**
+     * Download audio only in specified format
+     */
+    public function downloadAudio(string $url, string $format = 'mp3', array $options = []): Download
+    {
+        $options['audio_only'] = true;
+        $options['format'] = $format;
+
+        return $this->downloadVideo($url, $options);
+    }
+
+    /**
+     * Get supported audio formats
+     */
+    public function getSupportedAudioFormats(): array
+    {
+        return $this->audioFormats;
     }
 }
 
