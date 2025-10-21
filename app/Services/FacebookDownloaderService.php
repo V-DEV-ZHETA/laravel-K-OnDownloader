@@ -127,12 +127,12 @@ class FacebookDownloaderService extends BaseDownloaderService
     protected function getQualityFormat(string $quality): string
     {
         return match($quality) {
-            'best' => 'best[height<=1080]',
+            'best' => 'best',
             '720p' => 'best[height<=720]',
             '480p' => 'best[height<=480]',
             '360p' => 'best[height<=360]',
             'worst' => 'worst',
-            default => 'best[height<=720]'
+            default => 'best'
         };
     }
 
