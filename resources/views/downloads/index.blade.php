@@ -485,15 +485,15 @@
                 </div>
                 
                 <div class="mb-6">
-                    <div class="glassmorphism-card rounded-lg p-3 mb-3 flex items-center gap-3 cursor-pointer hover:bg-white/50 transition-colors">
+                    <div class="folder-option glassmorphism-card rounded-lg p-3 mb-3 flex items-center gap-3 cursor-pointer hover:bg-white/50 transition-colors" data-folder="Video Musik" onclick="selectFolder(this)">
                         <i class="fas fa-folder text-blue-500"></i>
                         <span class="font-medium text-glass-primary">Video Musik</span>
                     </div>
-                    <div class="glassmorphism-card rounded-lg p-3 mb-3 flex items-center gap-3 cursor-pointer hover:bg-white/50 transition-colors">
+                    <div class="folder-option glassmorphism-card rounded-lg p-3 mb-3 flex items-center gap-3 cursor-pointer hover:bg-white/50 transition-colors" data-folder="Tutorial" onclick="selectFolder(this)">
                         <i class="fas fa-folder text-green-500"></i>
                         <span class="font-medium text-glass-primary">Tutorial</span>
                     </div>
-                    <div class="glassmorphism-card rounded-lg p-3 mb-3 flex items-center gap-3 cursor-pointer hover:bg-white/50 transition-colors">
+                    <div class="folder-option glassmorphism-card rounded-lg p-3 mb-3 flex items-center gap-3 cursor-pointer hover:bg-white/50 transition-colors" data-folder="Hiburan" onclick="selectFolder(this)">
                         <i class="fas fa-folder text-purple-500"></i>
                         <span class="font-medium text-glass-primary">Hiburan</span>
                     </div>
@@ -780,12 +780,12 @@ function initMiniCharts() {
 
 function toggleBulkActions() {
     bulkSelectionMode = !bulkSelectionMode;
-    
+
     if (bulkSelectionMode) {
-        $('.download-item #checkbox-' + $(this).data('id')).removeClass('hidden');
+        $('.download-item .absolute').removeClass('hidden');
         $('#bulkActions').removeClass('hidden');
     } else {
-        $('.download-item #checkbox-' + $(this).data('id')).addClass('hidden');
+        $('.download-item .absolute').addClass('hidden');
         $('#bulkActions').addClass('hidden');
         clearSelection();
     }
@@ -1002,11 +1002,46 @@ function closeFolderModal() {
     $('body').removeClass('overflow-hidden');
 }
 
+let selectedFolder = null;
+
+function selectFolder(element) {
+    $('.folder-option').removeClass('bg-white/50');
+    $(element).addClass('bg-white/50');
+    selectedFolder = $(element).data('folder');
+}
+
 function confirmFolderSelection() {
-    // Implementation would depend on your backend
-    showToast('Item dipindahkan ke folder', 'success');
-    closeFolderModal();
-    clearSelection();
+    if (!selectedFolder) {
+        showToast('Pilih folder terlebih dahulu', 'warning');
+        return;
+    }
+
+    $.ajax({
+        url: '/downloads/bulk-update-folder',
+        method: 'PATCH',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: JSON.stringify({
+            ids: Array.from(selectedItems),
+            folder: selectedFolder
+        }),
+        contentType: 'application/json',
+        success: function(response) {
+            if (response.success) {
+                showToast(response.message, 'success');
+                closeFolderModal();
+                clearSelection();
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showToast(response.message || 'Gagal memindahkan ke folder', 'error');
+            }
+        },
+        error: function(xhr) {
+            console.error('Bulk update folder error:', xhr);
+            showToast('Gagal memindahkan ke folder', 'error');
+        }
+    });
 }
 
 function showNewFolderForm() {

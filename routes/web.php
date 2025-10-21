@@ -18,7 +18,11 @@ Route::prefix('downloads')->name('downloads.')->group(function () {
     Route::get('/{download}', [DownloadController::class, 'show'])->name('show');
     Route::get('/{download}/download', [DownloadController::class, 'download'])->name('download');
     Route::delete('/{download}', [DownloadController::class, 'destroy'])->name('destroy');
-    
+
+    // Bulk operations
+    Route::delete('/bulk-delete', [DownloadController::class, 'bulkDestroy'])->name('bulk-destroy');
+    Route::patch('/bulk-update-folder', [DownloadController::class, 'bulkUpdateFolder'])->name('bulk-update-folder');
+
     // API routes for AJAX
     Route::post('/video-info', [DownloadController::class, 'getVideoInfo'])->name('video-info');
     Route::post('/formats', [DownloadController::class, 'getAvailableFormats'])->name('formats');

@@ -250,6 +250,81 @@ class DownloadController extends Controller
         }
     }
 
+    public function bulkDestroy(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer|exists:downloads,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $ids = $request->input('ids');
+            $downloads = Download::whereIn('id', $ids)->get();
+
+            $deletedCount = 0;
+            foreach ($downloads as $download) {
+                // Delete file if exists
+                if ($download->file_path && file_exists($download->file_path)) {
+                    unlink($download->file_path);
+                }
+                $download->delete();
+                $deletedCount++;
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "{$deletedCount} downloads deleted successfully"
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete downloads: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function bulkUpdateFolder(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer|exists:downloads,id',
+            'folder' => 'required|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $ids = $request->input('ids');
+            $folder = $request->input('folder');
+
+            $updatedCount = Download::whereIn('id', $ids)->update(['folder' => $folder]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "{$updatedCount} downloads moved to folder '{$folder}'"
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to move downloads: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function thumbnailProxy(string $encoded_url)
     {
         try {

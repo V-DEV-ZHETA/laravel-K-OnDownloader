@@ -17,7 +17,8 @@ class Download extends Model
         'file_size',
         'status',
         'error_message',
-        'metadata'
+        'metadata',
+        'folder'
     ];
 
     protected $casts = [
