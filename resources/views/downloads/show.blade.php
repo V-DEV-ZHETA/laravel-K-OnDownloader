@@ -130,14 +130,14 @@
                                  alt="{{ $download->title }}"
                                  class="w-full h-64 object-cover"
                                  onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-64 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200\'><i class=\'fas fa-video text-6xl text-gray-400\'></i></div>';">
-                            
+
                             <!-- Play Overlay -->
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <div class="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center">
                                     <i class="fas fa-play text-3xl text-glass-accent ml-1"></i>
                                 </div>
                             </div>
-                            
+
                             <!-- Platform Badge -->
                             <div class="absolute top-4 left-4 glassmorphism-card rounded-lg px-3 py-2 flex items-center gap-2">
                                 <i class="{{ $download->platform->icon ?? 'fas fa-globe' }} text-glass-accent"></i>
@@ -145,7 +145,7 @@
                                     {{ $download->platform->display_name ?? ucfirst($download->platform) }}
                                 </span>
                             </div>
-                            
+
                             <!-- Duration Badge -->
                             @if($download->duration)
                                 <div class="absolute bottom-4 right-4 bg-black/80 rounded-lg px-3 py-1.5">
@@ -160,6 +160,15 @@
                                 <p class="text-glass-secondary font-semibold">Tidak ada pratinjau</p>
                             </div>
                         </div>
+                    @endif
+
+                    <!-- Play Video Button -->
+                    @if($download->status === 'completed' && $download->file_path && in_array(strtolower(pathinfo($download->file_path, PATHINFO_EXTENSION)), ['mp4', 'webm', 'ogg', 'avi', 'mov', 'wmv', 'flv', 'mkv']))
+                        <button onclick="playVideo('{{ asset('storage/' . $download->file_path) }}', '{{ $download->title }}')"
+                                class="glassmorphism-button-accent text-white font-bold py-3 px-6 rounded-xl glass-hover flex items-center justify-center gap-2 w-full sm:w-auto">
+                            <i class="fas fa-play"></i>
+                            <span>Putar Video</span>
+                        </button>
                     @endif
 
                     <!-- Title & Description -->
@@ -653,7 +662,7 @@ $(document).on('keydown', function(e) {
 if (!document.execCommand) {
     function copyShareUrl() {
         const urlInput = document.getElementById('shareUrl');
-        
+
         // Modern API
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(urlInput.value).then(() => {
@@ -674,6 +683,111 @@ if (!document.execCommand) {
         }
     }
 }
+
+function playVideo(videoUrl, title) {
+    // Create video modal
+    const modal = $(`
+        <div id="videoModal" class="fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex items-center justify-center min-h-screen px-4">
+                <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closeVideoModal()"></div>
+
+                <div class="glassmorphism-card rounded-2xl p-6 max-w-4xl w-full relative z-10 shadow-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-glass-primary">${title}</h3>
+                        <button onclick="closeVideoModal()" class="text-glass-secondary hover:text-glass-primary transition-colors">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+
+                    <div class="relative bg-black rounded-xl overflow-hidden">
+                        <video id="videoPlayer" controls class="w-full max-h-96" preload="metadata">
+                            <source src="${videoUrl}" type="video/mp4">
+                            Browser Anda tidak mendukung pemutaran video.
+                        </video>
+
+                        <!-- Loading overlay -->
+                        <div id="videoLoading" class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-spinner fa-spin text-white text-3xl mb-2"></i>
+                                <p class="text-white">Memuat video...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-4 text-sm text-glass-secondary">
+                        <span>Klik di luar modal untuk menutup</span>
+                        <div class="flex gap-2">
+                            <button onclick="toggleFullscreen()" class="glassmorphism-card px-3 py-1 rounded-lg text-xs">
+                                <i class="fas fa-expand"></i> Fullscreen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+
+    $('body').append(modal);
+    $('body').addClass('overflow-hidden');
+
+    const video = modal.find('#videoPlayer')[0];
+    const loading = modal.find('#videoLoading');
+
+    // Hide loading when video can play
+    video.addEventListener('canplay', function() {
+        loading.fadeOut();
+    });
+
+    // Handle video errors
+    video.addEventListener('error', function() {
+        loading.html(`
+            <div class="text-center">
+                <i class="fas fa-exclamation-triangle text-red-400 text-3xl mb-2"></i>
+                <p class="text-red-400">Gagal memuat video</p>
+            </div>
+        `);
+    });
+
+    // Auto-play when loaded
+    video.addEventListener('loadedmetadata', function() {
+        video.play().catch(e => {
+            console.log('Autoplay prevented:', e);
+        });
+    });
+}
+
+function closeVideoModal() {
+    const modal = $('#videoModal');
+    if (modal.length) {
+        const video = modal.find('#videoPlayer')[0];
+        if (video) {
+            video.pause();
+            video.currentTime = 0;
+        }
+        modal.remove();
+        $('body').removeClass('overflow-hidden');
+    }
+}
+
+function toggleFullscreen() {
+    const video = document.getElementById('videoPlayer');
+    if (video) {
+        if (video.requestFullscreen) {
+            video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) {
+            video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) {
+            video.msRequestFullscreen();
+        }
+    }
+}
+
+// Close video modal on Escape key
+$(document).on('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeVideoModal();
+    }
+});
 </script>
 @endpush
 

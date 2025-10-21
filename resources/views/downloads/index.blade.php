@@ -119,7 +119,7 @@
                             @if($download->thumbnail)
                                 <div class="w-full lg:w-48 h-32 rounded-xl overflow-hidden glassmorphism-card">
                                     <img class="w-full h-full object-cover"
-                                         src="{{ $download->thumbnail }}"
+                                         src="{{ strpos($download->thumbnail, 'http') === 0 ? $download->thumbnail : asset('storage/' . $download->thumbnail) }}"
                                          alt="{{ $download->title }}"
                                          onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center bg-gray-100\'><i class=\'fas fa-video text-4xl text-gray-400\'></i></div>';">
                                 </div>

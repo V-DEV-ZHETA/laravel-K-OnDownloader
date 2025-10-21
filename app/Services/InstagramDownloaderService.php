@@ -219,9 +219,16 @@ class InstagramDownloaderService extends BaseDownloaderService
         try {
             // Get video info first
             $info = $this->getVideoInfo($url);
+
+            // Download thumbnail locally for Instagram
+            $localThumbnail = null;
+            if ($info['thumbnail']) {
+                $localThumbnail = $this->downloadThumbnailLocally($info['thumbnail'], $url);
+            }
+
             $download->update([
                 'title' => $info['title'],
-                'thumbnail' => $info['thumbnail'],
+                'thumbnail' => $localThumbnail ?: $info['thumbnail'],
                 'duration' => $info['duration'],
                 'metadata' => $info
             ]);

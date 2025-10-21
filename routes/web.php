@@ -41,3 +41,6 @@ Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/defaults', [SettingsController::class, 'getDefaultSettings'])->name('defaults');
 });
 
+// Thumbnail proxy route
+Route::get('/thumbnail-proxy/{encoded_url}', [DownloadController::class, 'thumbnailProxy'])->name('thumbnail-proxy');
+

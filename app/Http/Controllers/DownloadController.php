@@ -249,4 +249,62 @@ class DownloadController extends Controller
             ], 500);
         }
     }
+
+    public function thumbnailProxy(string $encoded_url)
+    {
+        try {
+            // Decode the base64 encoded URL
+            $thumbnailUrl = base64_decode($encoded_url);
+
+            if (!$thumbnailUrl) {
+                abort(404, 'Invalid thumbnail URL');
+            }
+
+            // Validate URL format
+            if (!filter_var($thumbnailUrl, FILTER_VALIDATE_URL)) {
+                abort(404, 'Invalid thumbnail URL');
+            }
+
+            // Fetch the thumbnail from the original URL
+            $context = stream_context_create([
+                'http' => [
+                    'method' => 'GET',
+                    'header' => [
+                        'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                        'Referer: https://www.instagram.com/'
+                    ],
+                    'timeout' => 10
+                ]
+            ]);
+
+            $imageData = @file_get_contents($thumbnailUrl, false, $context);
+
+            if ($imageData === false) {
+                abort(404, 'Thumbnail not found');
+            }
+
+            // Determine content type based on URL or default to jpeg
+            $contentType = 'image/jpeg';
+            $extension = pathinfo(parse_url($thumbnailUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
+            if ($extension) {
+                $mimeTypes = [
+                    'jpg' => 'image/jpeg',
+                    'jpeg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'gif' => 'image/gif',
+                    'webp' => 'image/webp'
+                ];
+                $contentType = $mimeTypes[$extension] ?? 'image/jpeg';
+            }
+
+            // Return the image with appropriate headers
+            return response($imageData)
+                ->header('Content-Type', $contentType)
+                ->header('Cache-Control', 'public, max-age=3600')
+                ->header('Access-Control-Allow-Origin', '*');
+
+        } catch (\Exception $e) {
+            abort(404, 'Thumbnail proxy error');
+        }
+    }
 }

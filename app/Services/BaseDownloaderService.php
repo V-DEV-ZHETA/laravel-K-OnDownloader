@@ -125,5 +125,58 @@ abstract class BaseDownloaderService
             'm4a' => 'M4A Audio'
         ];
     }
+
+    protected function downloadThumbnailLocally(string $thumbnailUrl, string $originalUrl): ?string
+    {
+        try {
+            // Extract post ID from original URL for filename
+            $postId = null;
+            if (preg_match('/\/p\/([A-Za-z0-9_-]+)/', $originalUrl, $matches)) {
+                $postId = $matches[1];
+            } elseif (preg_match('/\/reel\/([A-Za-z0-9_-]+)/', $originalUrl, $matches)) {
+                $postId = $matches[1];
+            }
+
+            if (!$postId) {
+                $postId = 'unknown';
+            }
+
+            // Create thumbnails directory if it doesn't exist
+            $thumbnailDir = storage_path('app/public/thumbnails');
+            if (!is_dir($thumbnailDir)) {
+                mkdir($thumbnailDir, 0755, true);
+            }
+
+            // Generate filename
+            $extension = pathinfo(parse_url($thumbnailUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
+            $fileName = 'instagram_' . $postId . '_thumb.' . $extension;
+            $filePath = $thumbnailDir . '/' . $fileName;
+
+            // Download thumbnail using curl
+            $command = [
+                'curl',
+                '-s',
+                '-A', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                '--referer', 'https://www.instagram.com/',
+                '-o', $filePath,
+                $thumbnailUrl
+            ];
+
+            $result = $this->executeCommand($command);
+
+            if ($result['success'] && file_exists($filePath) && filesize($filePath) > 0) {
+                // Return the public URL for the thumbnail
+                return 'thumbnails/' . $fileName;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            Log::error('Failed to download thumbnail locally', [
+                'url' => $thumbnailUrl,
+                'error' => $e->getMessage()
+            ]);
+            return null;
+        }
+    }
 }
 
