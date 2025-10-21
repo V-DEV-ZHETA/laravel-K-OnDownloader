@@ -14,7 +14,7 @@
                 <div>
                     <h1 class="text-3xl font-bold text-glass-primary flex items-center">
                         <i class="{{ $platform->icon }} mr-3 text-glass-accent"></i>
-                        {{ $platform->display_name }} Details
+                        {{ $platform->display_name }}
                     </h1>
                     <p class="text-glass-secondary mt-1">Platform information and statistics</p>
                 </div>

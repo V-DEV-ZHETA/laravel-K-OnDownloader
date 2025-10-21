@@ -126,7 +126,7 @@
                     <!-- Thumbnail -->
                     @if($download->thumbnail)
                         <div class="relative rounded-xl overflow-hidden glassmorphism-card group">
-                            <img src="{{ $download->thumbnail }}"
+                            <img src="{{ strpos($download->thumbnail, 'http') === 0 ? $download->thumbnail : asset('storage/' . $download->thumbnail) }}"
                                  alt="{{ $download->title }}"
                                  class="w-full h-64 object-cover"
                                  onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-64 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200\'><i class=\'fas fa-video text-6xl text-gray-400\'></i></div>';">

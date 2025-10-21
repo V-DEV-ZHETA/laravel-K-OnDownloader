@@ -8,15 +8,12 @@
     <div class="glassmorphism-card rounded-2xl p-6 md:p-8 mb-8 shadow-xl">
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div class="flex items-center gap-4">
-                <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-history text-white text-2xl"></i>
-                </div>
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold text-glass-primary mb-1">
                         Riwayat Download
                     </h1>
                     <p class="text-glass-secondary">
-                        Kelola semua download Anda di sini 🐱
+                        Kelola semua download Anda di sini!!
                     </p>
                 </div>
             </div>
@@ -130,11 +127,18 @@
                             @endif
                             
                             <!-- Platform Badge -->
-                            <div class="absolute top-3 left-3 glassmorphism-card rounded-lg px-3 py-1.5 flex items-center gap-2">
-                                <i class="{{ $download->platform->icon ?? 'fas fa-globe' }} text-glass-accent"></i>
-                                <span class="text-xs font-semibold text-glass-primary">
-                                    {{ $download->platform->display_name ?? ucfirst($download->platform) }}
-                                </span>
+                            <div class="absolute top-3 left-3 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 border border-white/20">
+                                @if($download->platform && is_object($download->platform))
+                                    <i class="{{ $download->platform->icon }} text-white text-sm"></i>
+                                    <span class="text-xs font-bold text-white">
+                                        {{ $download->platform->display_name ?? ucfirst($download->platform->name) }}
+                                    </span>
+                                @else
+                                    <i class="fas fa-globe text-gray-400 text-sm"></i>
+                                    <span class="text-xs font-bold text-white">
+                                        {{ ucfirst($download->platform) }}
+                                    </span>
+                                @endif
                             </div>
                         </div>
 

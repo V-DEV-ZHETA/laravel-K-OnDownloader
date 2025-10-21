@@ -18,6 +18,12 @@ class PlatformController extends Controller
     public function show(Platform $platform): View
     {
         $platform->load('settings');
+
+        // Ensure default_settings is an array
+        if (is_string($platform->default_settings)) {
+            $platform->default_settings = json_decode($platform->default_settings, true) ?? [];
+        }
+
         return view('platforms.show', compact('platform'));
     }
 

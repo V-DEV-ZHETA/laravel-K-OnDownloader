@@ -8,15 +8,12 @@
     <div class="glassmorphism-card rounded-2xl p-6 md:p-8 mb-8 shadow-xl">
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div class="flex items-center gap-4">
-                <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-sliders-h text-white text-2xl"></i>
-                </div>
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold text-glass-primary mb-1">
                         Pengaturan Platform
                     </h1>
                     <p class="text-glass-secondary">
-                        Kelola konfigurasi setiap platform 🐱
+                        Kelola konfigurasi setiap platform!!
                     </p>
                 </div>
             </div>
@@ -62,7 +59,7 @@
                             ? 'bg-gradient-to-br from-green-400 to-green-500' 
                             : 'bg-gradient-to-br from-gray-300 to-gray-400' }}
                         shadow-lg transition-all duration-300">
-                        <i class="{{ $platform->icon }} text-white text-3xl"></i>
+                        <i class="{{ $platform->icon }} text-black text-5xl"></i>
                     </div>
                     
                     <!-- Status Badge -->
@@ -212,7 +209,7 @@
     <div class="mt-8 glassmorphism-card rounded-2xl p-6 md:p-8 bg-gradient-to-br from-orange-50 to-yellow-50">
         <div class="flex flex-col md:flex-row items-center gap-6">
             <div class="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                <i class="fas fa-lightbulb text-white text-3xl"></i>
+                <i class="fas fa-lightbulb text-yellow-500 text-5xl"></i>
             </div>
             <div class="flex-1 text-center md:text-left">
                 <h3 class="text-xl font-bold text-glass-primary mb-2">Tips Pengaturan</h3>

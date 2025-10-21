@@ -14,7 +14,7 @@
                 <div>
                     <h1 class="text-3xl font-bold text-glass-primary flex items-center">
                         <i class="{{ $platform->icon }} mr-3 text-glass-accent"></i>
-                        {{ $platform->display_name }} Settings
+                        {{ $platform->display_name }}
                     </h1>
                     <p class="text-glass-secondary mt-1">Configure download options for {{ $platform->display_name }}</p>
                 </div>

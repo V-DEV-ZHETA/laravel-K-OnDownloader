@@ -8,15 +8,12 @@
     <div class="glassmorphism-card rounded-2xl p-6 md:p-8 mb-8 shadow-xl">
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div class="flex items-center gap-4">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-globe text-white text-2xl"></i>
-                </div>
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold text-glass-primary mb-1">
                         Platform Media
                     </h1>
                     <p class="text-glass-secondary">
-                        Kelola platform yang didukung untuk download 🐱
+                        Kelola platform yang didukung untuk download!!
                     </p>
                 </div>
             </div>
@@ -113,7 +110,7 @@
                             ? 'bg-gradient-to-br from-green-400 to-green-500' 
                             : 'bg-gradient-to-br from-gray-300 to-gray-400' }}
                         shadow-lg transition-all duration-300 group-hover:scale-110">
-                        <i class="{{ $platform->icon }} text-white text-3xl"></i>
+                        <i class="{{ $platform->icon }} text-black text-5xl"></i>
                     </div>
                     
                     <!-- Status Badge -->
@@ -148,12 +145,6 @@
                             <span>Platform Nonaktif</span>
                         @endif
                     </span>
-                    
-                    @if($platform->description)
-                        <p class="text-sm text-glass-secondary mt-3">
-                            {{ $platform->description }}
-                        </p>
-                    @endif
                 </div>
 
                 <!-- Platform Stats (if available) -->
@@ -177,8 +168,8 @@
                     <button onclick="togglePlatform({{ $platform->id }}, this)"
                             class="w-full font-bold py-3 px-4 rounded-xl glass-hover flex items-center justify-center gap-2 transition-all duration-300
                             {{ $platform->is_active 
-                                ? 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700' 
-                                : 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700' }}">
+                                ? 'bg-red-500 text-white' 
+                                : 'bg-green-500 text-white' }}">
                         @if($platform->is_active)
                             <i class="fas fa-pause"></i>
                             <span>Nonaktifkan</span>
@@ -192,10 +183,6 @@
                 <!-- Additional Info -->
                 <div class="mt-4 pt-4 border-t border-white/30">
                     <div class="flex items-center justify-between text-xs text-glass-secondary">
-                        <span class="flex items-center gap-1">
-                            <i class="fas fa-code"></i>
-                            {{ $platform->name }}
-                        </span>
                         @if($platform->version)
                             <span class="px-2 py-1 glassmorphism-card rounded-full">
                                 v{{ $platform->version }}
@@ -224,7 +211,7 @@
     <div class="mt-8 glassmorphism-card rounded-2xl p-6 md:p-8 bg-gradient-to-br from-orange-50 to-yellow-50">
         <div class="flex flex-col md:flex-row items-center gap-6">
             <div class="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                <i class="fas fa-question-circle text-white text-3xl"></i>
+                <i class="fas fa-question-circle text-orange-500 text-5xl"></i>
             </div>
             <div class="flex-1 text-center md:text-left">
                 <h3 class="text-xl font-bold text-glass-primary mb-2">Butuh Bantuan?</h3>
