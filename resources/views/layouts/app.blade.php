@@ -123,6 +123,36 @@
             opacity: 1;
             transform: translateX(-50%) translateY(-4px);
         }
+
+        /* Logo animation */
+        .logo-container {
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer link animation */
+        .footer-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #fb923c, #fbbf24);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-link:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
 <body class="text-glass-primary min-h-screen flex flex-col">
@@ -137,19 +167,19 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ route('downloads.create') }}" class="flex items-center gap-2 text-glass-primary text-2xl md:text-3xl font-bold glass-hover group">
-                        <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-cat text-white text-xl md:text-2xl"></i>
+                    <a href="{{ route('downloads.create') }}" class="flex items-center text-glass-primary text-2xl md:text-3xl font-bold ">
+                        <div class="logo-container w-12 h-12 md:w-20 md:h-20 rounded-xl overflow-hidden">
+                            <img src="https://ik.imagekit.io/hdxn6kcob/nekodrop.png?updatedAt=1761014269538" alt="NekoDrop Logo" class="w-full h-full object-cover">
                         </div>
-                        <span class="logo-text">NekoDrop</span>
-                        <span class="hidden sm:inline-block px-2 py-1 text-xs font-bold bg-gradient-to-r from-orange-400 to-yellow-400 text-white rounded-full">
-                            v1.0
-                        </span>
+                        <div class="flex flex-col">
+                            <span class="logo-text text-orange-500">NEKODROP</span>
+                            <span class="text-sm text-glass-secondary font-bold">MEDIA DOWNLOADER</span>
+                        </div>
                     </a>
                 </div>
 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center gap-2">
+                <div class="hidden md:flex items-center gap-1">
                     <a href="{{ route('downloads.create') }}" 
                        class="nav-link text-glass-primary hover:text-glass-accent px-4 py-2 rounded-xl text-sm font-bold glass-hover transition-all duration-300 flex items-center gap-2 {{ request()->routeIs('downloads.create') ? 'active' : '' }}">
                         <i class="fas fa-download"></i>
@@ -172,7 +202,7 @@
                     </a>
 
                     <!-- Divider -->
-                    <div class="w-px h-8 bg-white/30 mx-2"></div>
+                    <div class="w-px h-8 bg-white/30 mx-3"></div>
 
                     <!-- Dark Mode Toggle -->
                     <button id="theme-toggle" 
@@ -328,9 +358,9 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <!-- Brand -->
                 <div class="md:col-span-2">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                            <i class="fas fa-cat text-white text-2xl"></i>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl overflow-hidden shadow-lg">
+                            <img src="https://ik.imagekit.io/hdxn6kcob/nekodrop.png?updatedAt=1761014269538" alt="NekoDrop Logo" class="w-full h-full object-cover">
                         </div>
                         <span class="logo-text text-2xl font-bold text-glass-primary">NekoDrop</span>
                     </div>
@@ -338,16 +368,16 @@
                         Download media favorit Anda dari berbagai platform dengan mudah, cepat, dan gratis! 🐱✨
                     </p>
                     <div class="flex gap-3">
-                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover">
+                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover transition-all duration-300 hover:scale-110">
                             <i class="fab fa-github text-glass-primary"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover">
+                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover transition-all duration-300 hover:scale-110">
                             <i class="fab fa-twitter text-glass-primary"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover">
+                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover transition-all duration-300 hover:scale-110">
                             <i class="fab fa-discord text-glass-primary"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover">
+                        <a href="#" class="w-10 h-10 glassmorphism-card rounded-lg flex items-center justify-center glass-hover transition-all duration-300 hover:scale-110">
                             <i class="fab fa-telegram text-glass-primary"></i>
                         </a>
                     </div>
@@ -355,21 +385,21 @@
 
                 <!-- Quick Links -->
                 <div>
-                    <h3 class="font-bold text-glass-primary mb-4">Tautan Cepat</h3>
-                    <ul class="space-y-2">
+                    <h3 class="font-bold text-glass-primary mb-4 text-lg">Tautan Cepat</h3>
+                    <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('downloads.create') }}" class="text-glass-secondary hover:text-glass-accent transition-colors">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>Unduh Media
+                            <a href="{{ route('downloads.create') }}" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Unduh Media
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('downloads.index') }}" class="text-glass-secondary hover:text-glass-accent transition-colors">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>Riwayat Download
+                            <a href="{{ route('downloads.index') }}" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Riwayat Download
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('platforms.index') }}" class="text-glass-secondary hover:text-glass-accent transition-colors">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>Platform
+                            <a href="{{ route('platforms.index') }}" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Platform
                             </a>
                         </li>
                     </ul>
@@ -377,26 +407,26 @@
 
                 <!-- Support -->
                 <div>
-                    <h3 class="font-bold text-glass-primary mb-4">Dukungan</h3>
-                    <ul class="space-y-2">
+                    <h3 class="font-bold text-glass-primary mb-4 text-lg">Dukungan</h3>
+                    <ul class="space-y-3">
                         <li>
-                            <a href="#" class="text-glass-secondary hover:text-glass-accent transition-colors">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>Pusat Bantuan
+                            <a href="#" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Pusat Bantuan
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="text-glass-secondary hover:text-glass-accent transition-colors">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>FAQ
+                            <a href="#" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>FAQ
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="text-glass-secondary hover:text-glass-accent transition-colors">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>Hubungi Kami
+                            <a href="#" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Hubungi Kami
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="text-glass-secondary hover:text-glass-accent transition-colors">
-                                <i class="fas fa-chevron-right text-xs mr-2"></i>Lapor Bug
+                            <a href="#" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors flex items-center">
+                                <i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Lapor Bug
                             </a>
                         </li>
                     </ul>
@@ -410,9 +440,9 @@
                         © {{ date('Y') }} <span class="font-bold">NekoDrop</span>. Made with <i class="fas fa-heart text-red-500"></i> by NekoDrop Team. All rights reserved. 🐾
                     </p>
                     <div class="flex gap-4 text-sm">
-                        <a href="#" class="text-glass-secondary hover:text-glass-accent transition-colors">Privasi</a>
+                        <a href="#" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors">Privasi</a>
                         <span class="text-glass-secondary">•</span>
-                        <a href="#" class="text-glass-secondary hover:text-glass-accent transition-colors">Syarat & Ketentuan</a>
+                        <a href="#" class="footer-link text-glass-secondary hover:text-glass-accent transition-colors">Syarat & Ketentuan</a>
                     </div>
                 </div>
             </div>
