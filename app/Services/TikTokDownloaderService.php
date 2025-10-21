@@ -94,32 +94,44 @@ class TikTokDownloaderService extends BaseDownloaderService
         $watermark = $options['watermark'] ?? $this->getSetting('watermark', false);
 
         $command = ['yt-dlp'];
-        
-        // Output path
-        $command[] = '-o';
-        $command[] = $this->downloadPath . '/%(title)s.%(ext)s';
-        
+
+        // Output path - use specific extension for audio files
+        if ($audioOnly) {
+            $command[] = '-o';
+            $command[] = $this->downloadPath . '/%(title)s.' . $format;
+        } else {
+            $command[] = '-o';
+            $command[] = $this->downloadPath . '/%(title)s.%(ext)s';
+        }
+
         // Quality selection
         if ($audioOnly) {
+            $command[] = '--format';
+            $command[] = 'bestaudio';
             $command[] = '--extract-audio';
             $command[] = '--audio-format';
             $command[] = $format;
+            $command[] = '--audio-quality';
+            $command[] = '0'; // Best audio quality
+            $command[] = '--no-embed-subs'; // Don't embed subtitles
+            $command[] = '--keep-video'; // Keep video file if audio extraction fails
+            $command[] = 'false';
         } else {
             $command[] = '--format';
             $command[] = $this->getQualityFormat($quality);
         }
-        
+
         // Watermark handling - remove this option as it's not supported in newer yt-dlp versions
         // if (!$watermark) {
         //     $command[] = '--no-watermark';
         // }
-        
+
         // Additional options
         $command[] = '--no-playlist';
         $command[] = '--ignore-errors';
-        
+
         $command[] = $url;
-        
+
         return $command;
     }
 

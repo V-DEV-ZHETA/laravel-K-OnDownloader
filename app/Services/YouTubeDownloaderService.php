@@ -15,6 +15,9 @@ class YouTubeDownloaderService extends BaseDownloaderService
         'embed_metadata' => true
     ];
 
+    // Supported audio formats
+    protected array $audioFormats = ['mp3', 'm4a', 'wav', 'opus', 'flac'];
+
     public function getVideoInfo(string $url): array
     {
         $command = [
@@ -65,7 +68,7 @@ class YouTubeDownloaderService extends BaseDownloaderService
             $result = $this->executeCommand($command);
 
             if ($result['success']) {
-                $filePath = $this->extractFilePath($result['output']);
+                $filePath = $this->extractFilePath($result['output'], $options);
                 $fileSize = file_exists($filePath) ? filesize($filePath) : null;
                 
                 $this->updateDownloadStatus($download, 'completed', [
@@ -95,56 +98,87 @@ class YouTubeDownloaderService extends BaseDownloaderService
         $subtitles = $options['subtitles'] ?? $this->getSetting('subtitles', false);
         $embedMetadata = $options['embed_metadata'] ?? $this->getSetting('embed_metadata', true);
 
+        // Auto-detect audio only mode based on format
+        if (in_array(strtolower($format), $this->audioFormats)) {
+            $audioOnly = true;
+        }
+
         $command = ['yt-dlp'];
-        
-        // Output path
+
+        // Output path with proper extension
         $command[] = '-o';
-        $command[] = $this->downloadPath . '/%(title)s.%(ext)s';
-        
-        // Quality selection
+        if ($audioOnly) {
+            $command[] = $this->downloadPath . '/%(title)s.' . $format;
+        } else {
+            $command[] = $this->downloadPath . '/%(title)s.%(ext)s';
+        }
+
+        // Audio download configuration
         if ($audioOnly) {
             $command[] = '--extract-audio';
             $command[] = '--audio-format';
             $command[] = $format;
+            $command[] = '--audio-quality';
+            $command[] = '0'; // Best audio quality
+            
+            // For MP3, add additional quality settings
+            if (strtolower($format) === 'mp3') {
+                $command[] = '--postprocessor-args';
+                $command[] = 'ffmpeg:-b:a 320k'; // High quality MP3 (320kbps)
+            }
+            
+            $command[] = '--format';
+            $command[] = 'bestaudio/best';
         } else {
+            // Video download configuration
             $command[] = '--format';
             $command[] = $this->getQualityFormat($quality);
         }
-        
-        // Subtitles
-        if ($subtitles) {
-            $command[] = '--write-subs';
-            $command[] = '--write-auto-subs';
-        }
-        
+
         // Metadata embedding
         if ($embedMetadata) {
             $command[] = '--embed-metadata';
-            $command[] = '--embed-thumbnail';
+            if (!$audioOnly) {
+                $command[] = '--embed-thumbnail';
+            } else {
+                // For audio files, embed thumbnail as cover art
+                $command[] = '--embed-thumbnail';
+                $command[] = '--ppa';
+                $command[] = 'EmbedThumbnail+ffmpeg_o:-c:v mjpeg -vf crop="\'if(gt(ih,iw),iw,ih)\':\'if(gt(iw,ih),ih,iw)\'"';
+            }
         }
-        
+
+        // Subtitles - only for video downloads
+        if (!$audioOnly && $subtitles) {
+            $command[] = '--write-subs';
+            $command[] = '--write-auto-subs';
+            $command[] = '--sub-lang';
+            $command[] = 'en,id'; // English and Indonesian subtitles
+        }
+
         // Additional options
         $command[] = '--no-playlist';
         $command[] = '--ignore-errors';
-        
+        $command[] = '--no-warnings';
+
         $command[] = $url;
-        
+
         return $command;
     }
 
     protected function getQualityFormat(string $quality): string
     {
         return match($quality) {
-            'best' => 'best',
-            '2160p' => 'best[height<=2160]',
-            '1440p' => 'best[height<=1440]',
-            '1080p' => 'best[height<=1080]',
-            '720p' => 'best[height<=720]',
-            '480p' => 'best[height<=480]',
-            '360p' => 'best[height<=360]',
-            '240p' => 'best[height<=240]',
-            'worst' => 'worst',
-            default => 'best'
+            'best' => 'bestvideo+bestaudio/best',
+            '2160p' => 'bestvideo[height<=2160]+bestaudio/best[height<=2160]',
+            '1440p' => 'bestvideo[height<=1440]+bestaudio/best[height<=1440]',
+            '1080p' => 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
+            '720p' => 'bestvideo[height<=720]+bestaudio/best[height<=720]',
+            '480p' => 'bestvideo[height<=480]+bestaudio/best[height<=480]',
+            '360p' => 'bestvideo[height<=360]+bestaudio/best[height<=360]',
+            '240p' => 'bestvideo[height<=240]+bestaudio/best[height<=240]',
+            'worst' => 'worstvideo+worstaudio/worst',
+            default => 'bestvideo+bestaudio/best'
         };
     }
 
@@ -161,15 +195,38 @@ class YouTubeDownloaderService extends BaseDownloaderService
         return sprintf('%02d:%02d', $minutes, $seconds);
     }
 
-    protected function extractFilePath(string $output): ?string
+    protected function extractFilePath(string $output, array $options = []): ?string
     {
         $lines = explode("\n", $output);
+        $format = $options['format'] ?? 'mp4';
+        $audioOnly = in_array(strtolower($format), $this->audioFormats);
+        
+        // Look for the final destination after all post-processing
+        $destinations = [];
         foreach ($lines as $line) {
             if (strpos($line, '[download] Destination:') !== false) {
-                return trim(str_replace('[download] Destination:', '', $line));
+                $destinations[] = trim(str_replace('[download] Destination:', '', $line));
+            }
+            if (strpos($line, '[ExtractAudio] Destination:') !== false) {
+                return trim(str_replace('[ExtractAudio] Destination:', '', $line));
+            }
+            if (strpos($line, '[ffmpeg] Destination:') !== false) {
+                return trim(str_replace('[ffmpeg] Destination:', '', $line));
             }
         }
-        return null;
+        
+        // If audio only, look for file with correct extension
+        if ($audioOnly && !empty($destinations)) {
+            $lastDestination = end($destinations);
+            $pathInfo = pathinfo($lastDestination);
+            $expectedPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.' . $format;
+            
+            if (file_exists($expectedPath)) {
+                return $expectedPath;
+            }
+        }
+        
+        return !empty($destinations) ? end($destinations) : null;
     }
 
     public function getAvailableFormats(string $url): array
@@ -206,10 +263,27 @@ class YouTubeDownloaderService extends BaseDownloaderService
             }
         }
 
-        // Add max height to formats for frontend use
         $formats['max_height'] = $maxHeight;
 
         return $formats;
     }
-}
 
+    /**
+     * Download audio only in specified format
+     */
+    public function downloadAudio(string $url, string $format = 'mp3', array $options = []): Download
+    {
+        $options['audio_only'] = true;
+        $options['format'] = $format;
+        
+        return $this->downloadVideo($url, $options);
+    }
+
+    /**
+     * Get supported audio formats
+     */
+    public function getSupportedAudioFormats(): array
+    {
+        return $this->audioFormats;
+    }
+}

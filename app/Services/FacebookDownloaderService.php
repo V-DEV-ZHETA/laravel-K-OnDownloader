@@ -94,33 +94,44 @@ class FacebookDownloaderService extends BaseDownloaderService
         $subtitles = $options['subtitles'] ?? $this->getSetting('subtitles', false);
 
         $command = ['yt-dlp'];
-        
-        // Output path
-        $command[] = '-o';
-        $command[] = $this->downloadPath . '/%(title)s.%(ext)s';
-        
+
+        // Output path - use specific extension for audio files
+        if ($audioOnly) {
+            $command[] = '-o';
+            $command[] = $this->downloadPath . '/%(title)s.' . $format;
+        } else {
+            $command[] = '-o';
+            $command[] = $this->downloadPath . '/%(title)s.%(ext)s';
+        }
+
         // Quality selection
         if ($audioOnly) {
+            $command[] = '--format';
+            $command[] = 'bestaudio[ext=mp4]/bestaudio';
             $command[] = '--extract-audio';
             $command[] = '--audio-format';
             $command[] = $format;
+            $command[] = '--audio-quality';
+            $command[] = '0'; // Best audio quality
+            $command[] = '--no-embed-subs'; // Don't embed subtitles
+            $command[] = '--no-keep-video'; // Don't keep video file after audio extraction
         } else {
             $command[] = '--format';
             $command[] = $this->getQualityFormat($quality);
         }
-        
-        // Subtitles
-        if ($subtitles) {
+
+        // Subtitles - only for video downloads
+        if (!$audioOnly && $subtitles) {
             $command[] = '--write-subs';
             $command[] = '--write-auto-subs';
         }
-        
+
         // Additional options
         $command[] = '--no-playlist';
         $command[] = '--ignore-errors';
-        
+
         $command[] = $url;
-        
+
         return $command;
     }
 

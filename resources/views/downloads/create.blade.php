@@ -42,7 +42,7 @@
                     <input type="url"
                            id="url"
                            name="url"
-                           class="glassmorphism-input w-full px-6 py-5 rounded-2xl text-glass-primary placeholder-glass-secondary text-lg transition-all duration-300 focus:scale-[1.02] focus:shadow-xl border-2 border-transparent focus:border-orange-400"
+                           class="glassmorphism-input w-full px-6 py-5 rounded-2xl text-glass-primary text-lg transition-all  border-2"
                            placeholder="https://youtube.com/watch?v=... atau tarik & lepas URL di sini"
                            required>
                     
@@ -139,18 +139,10 @@
             <!-- Opsi Unduhan (Tampil setelah video terdeteksi) -->
             <div id="downloadOptions" class="hidden opacity-0 transition-all duration-500 ease-out transform scale-95">
                 <div class="space-y-6">
-                    <!-- Judul Seksi -->
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <i class="fas fa-sliders-h text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-glass-primary">Pengaturan Unduhan</h3>
-                    </div>
-
                     <!-- Grid Opsi -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Pemilihan Kualitas -->
-                        <div id="qualitySection" class="hidden glassmorphism-card rounded-2xl p-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] border-2 border-white/30">
+                        <div id="qualitySection" class="hidden glassmorphism-card rounded-2xl p-6  border-2 border-white/30">
                             <label for="quality" class="block text-base font-bold text-glass-primary mb-4 flex items-center gap-3">
                                 <i class="fas fa-hd-video text-glass-accent text-xl"></i>
                                 <span>Kualitas Video</span>
@@ -168,7 +160,7 @@
                         </div>
 
                         <!-- Pemilihan Format -->
-                        <div id="formatSection" class="hidden glassmorphism-card rounded-2xl p-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] border-2 border-white/30">
+                        <div id="formatSection" class="hidden glassmorphism-card rounded-2xl p-6 border-2 border-white/30">
                             <label for="format" class="block text-base font-bold text-glass-primary mb-4 flex items-center gap-3">
                                 <i class="fas fa-file-video text-glass-accent text-xl"></i>
                                 <span>Format File</span>
@@ -233,19 +225,19 @@
     <!-- Kartu Statistik -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
         <div class="glassmorphism-card rounded-2xl p-6 text-center glass-hover transition-all duration-300 hover:scale-105 shadow-lg border-2 border-white/30">
-            <div class="text-4xl font-extrabold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent mb-2">4</div>
+            <div class="text-4xl font-extrabold bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-black mb-2">4</div>
             <div class="text-sm font-semibold text-glass-secondary">Platform</div>
         </div>
         <div class="glassmorphism-card rounded-2xl p-6 text-center glass-hover transition-all duration-300 hover:scale-105 shadow-lg border-2 border-white/30">
-            <div class="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-2">4K</div>
+            <div class="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-black mb-2">4K</div>
             <div class="text-sm font-semibold text-glass-secondary">Kualitas</div>
         </div>
         <div class="glassmorphism-card rounded-2xl p-6 text-center glass-hover transition-all duration-300 hover:scale-105 shadow-lg border-2 border-white/30">
-            <div class="text-4xl font-extrabold bg-gradient-to-r from-green-500 to-teal-500 bg-clip-text text-transparent mb-2">∞</div>
+            <div class="text-4xl font-extrabold bg-gradient-to-r from-green-500 to-teal-500 bg-clip-text text-black mb-2">∞</div>
             <div class="text-sm font-semibold text-glass-secondary">Unduhan</div>
         </div>
         <div class="glassmorphism-card rounded-2xl p-6 text-center glass-hover transition-all duration-300 hover:scale-105 shadow-lg border-2 border-white/30">
-            <div class="text-4xl font-extrabold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-2">100%</div>
+            <div class="text-4xl font-extrabold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-black mb-2">100%</div>
             <div class="text-sm font-semibold text-glass-secondary">Gratis</div>
         </div>
     </div>
