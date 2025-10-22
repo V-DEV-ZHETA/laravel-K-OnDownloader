@@ -1,4 +1,4 @@
-@extends('layouts.app')
+    @extends('layouts.app')
 
 @section('title', 'Detail Download - NekoDrop')
 
@@ -37,7 +37,7 @@
                 <div>
                     <h1 class="text-2xl md:text-3xl font-bold text-glass-primary mb-1">
                         @if($download->status === 'completed')
-                            Download Selesai! 🎉
+                            Download Selesai!!  
                         @elseif($download->status === 'downloading')
                             Sedang Mengunduh...
                         @elseif($download->status === 'failed')
@@ -163,7 +163,7 @@
                     @endif
 
                     <!-- Play Video Button -->
-                    @if($download->status === 'completed' && $download->file_path && in_array(strtolower(pathinfo($download->file_path, PATHINFO_EXTENSION)), ['mp4', 'webm', 'ogg', 'avi', 'mov', 'wmv', 'flv', 'mkv']))
+                    @if($download->status === 'completed' && $download->file_path && in_array(strtolower(pathinfo($download->file_path, PATHINFO_EXTENSION)), ['mp4', 'ogg', 'avi', 'mov', 'wmv', 'flv', 'mkv']))
                         <button onclick="playVideo('{{ asset('storage/' . $download->file_path) }}', '{{ $download->title }}')"
                                 class="glassmorphism-button-accent text-white font-bold py-3 px-6 rounded-xl glass-hover flex items-center justify-center gap-2 w-full sm:w-auto">
                             <i class="fas fa-play"></i>
