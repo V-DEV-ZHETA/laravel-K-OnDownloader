@@ -10,10 +10,10 @@
             <div class="relative">
                 {{-- <div class="w-24 h-24 glassmorphism-card rounded-full flex items-center justify-center shadow-xl animate-bounce">
                     <i class="fas fa-cat text-5xl text-glass-accent"></i>
-                </div> --}}
+                </div>
                 <div class="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
                     <i class="fas fa-download text-white"></i>
-                </div>
+                </div> --}}
             </div>
         </div>
         {{-- <h1 class="text-4xl md:text-6xl font-extrabold text-glass-primary mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500">

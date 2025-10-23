@@ -109,13 +109,13 @@
 
                 <!-- Action Buttons -->
                 <div class="space-y-2">
-                    <a href="{{ route('settings.show', $platform) }}"
+                    {{-- <a href="{{ route('settings.show', $platform) }}"
                        class="w-full glassmorphism-button text-white font-bold py-3 px-4 rounded-xl glass-hover flex items-center justify-center gap-2">
                         <i class="fas fa-cog"></i>
                         <span>Konfigurasi</span>
-                    </a>
+                    </a> --}}
 
-                    <button onclick="togglePlatform({{ $platform->id }})"
+                    {{-- <button onclick="togglePlatform({{ $platform->id }})"
                             class="w-full font-bold py-3 px-4 rounded-xl glass-hover flex items-center justify-center gap-2 transition-all duration-300
                             {{ $platform->is_active 
                                 ? 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700' 
@@ -127,7 +127,7 @@
                             <i class="fas fa-play"></i>
                             <span>Aktifkan</span>
                         @endif
-                    </button>
+                    </button> --}}
                 </div>
             </div>
         @endforeach

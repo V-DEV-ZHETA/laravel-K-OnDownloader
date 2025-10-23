@@ -521,18 +521,18 @@
     <div id="deleteModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeDeleteModal()"></div>
-            
+
             <div class="glassmorphism-card rounded-2xl p-8 max-w-md w-full relative z-10 shadow-2xl">
                 <div class="text-center mb-6">
                     <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-400 to-red-500 rounded-full flex items-center justify-center">
                         <i class="fas fa-exclamation-triangle text-white text-3xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-glass-primary mb-2">Hapus Download?</h3>
-                    <p class="text-glass-secondary">
+                    <h3 id="deleteModalTitle" class="text-2xl font-bold text-glass-primary mb-2">Hapus Download?</h3>
+                    <p id="deleteModalMessage" class="text-glass-secondary">
                         Apakah Anda yakin ingin menghapus download ini? File yang sudah diunduh juga akan dihapus.
                     </p>
                 </div>
-                
+
                 <div class="flex gap-3">
                     <button onclick="closeDeleteModal()"
                             class="flex-1 glassmorphism-card px-6 py-3 rounded-xl font-bold text-glass-primary hover:bg-white/50 transition-all duration-300">
@@ -836,10 +836,10 @@ function downloadSelected() {
 
 function deleteSelected() {
     if (selectedItems.size === 0) return;
-    
-    // Show confirmation modal
+
+    // Show confirmation modal with bulk delete message
     deleteDownloadId = Array.from(selectedItems);
-    openDeleteModal();
+    openDeleteModal(true);
 }
 
 function moveSelectedToFolder() {
@@ -1125,10 +1125,18 @@ function updateEmptyState() {
 
 function deleteDownload(downloadId) {
     deleteDownloadId = downloadId;
-    openDeleteModal();
+    openDeleteModal(false);
 }
 
-function openDeleteModal() {
+function openDeleteModal(isBulk = false) {
+    if (isBulk) {
+        $('#deleteModalTitle').text('Hapus Semua Download?');
+        $('#deleteModalMessage').text(`Apakah Anda yakin ingin menghapus ${selectedItems.size} download yang dipilih? File yang sudah diunduh juga akan dihapus.`);
+    } else {
+        $('#deleteModalTitle').text('Hapus Download?');
+        $('#deleteModalMessage').text('Apakah Anda yakin ingin menghapus download ini? File yang sudah diunduh juga akan dihapus.');
+    }
+
     $('#deleteModal').removeClass('hidden').addClass('show');
     $('body').addClass('overflow-hidden');
 }
@@ -1144,29 +1152,30 @@ function confirmDelete() {
 
     const isBulk = Array.isArray(deleteDownloadId);
     const ids = isBulk ? deleteDownloadId : [deleteDownloadId];
-    
+
     $.ajax({
         url: isBulk ? '/downloads/bulk-delete' : `/downloads/${deleteDownloadId}`,
         method: 'DELETE',
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Content-Type': isBulk ? 'application/json' : 'application/x-www-form-urlencoded'
         },
-        data: isBulk ? { ids: ids } : null,
+        data: isBulk ? JSON.stringify({ ids: ids }) : null,
         success: function(response) {
             if (response.success) {
-                showToast(isBulk ? 'Download berhasil dihapus!' : 'Download berhasil dihapus! 🗑️', 'success');
-                
+                showToast(isBulk ? `${ids.length} download berhasil dihapus!` : 'Download berhasil dihapus! 🗑️', 'success');
+
                 // Animate removal
                 ids.forEach(id => {
                     const $item = $(`.download-item[data-id="${id}"]`);
                     $item.addClass('hiding');
-                    
+
                     setTimeout(() => {
                         $item.remove();
                         updateEmptyState();
                     }, 300);
                 });
-                
+
                 // Reload if page is empty
                 if ($('.download-item').length === 0) {
                     setTimeout(() => location.reload(), 1000);
